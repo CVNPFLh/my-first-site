@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة حسين التقنية | Matrix Edition</title>
+    <title>بوابة حسين التقنية | Live System</title>
     <style>
         :root {
-            --primary-green: #00ff41; /* لون الماتريكس الحقيقي */
+            --primary-green: #00ff41;
             --dark-bg: #000000;
-            --card-bg: rgba(10, 10, 10, 0.85);
+            --card-bg: rgba(10, 10, 10, 0.9);
         }
 
         body {
@@ -23,7 +23,6 @@
             min-height: 100vh;
         }
 
-        /* كود خلفية الماتريكس */
         #matrix-canvas {
             position: fixed;
             top: 0;
@@ -31,15 +30,31 @@
             z-index: -1;
         }
 
+        /* نظام الساعة والعداد العلوي */
+        .system-status {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1100px;
+            margin-top: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--primary-green);
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.6);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            z-index: 2;
+        }
+
         .header {
             text-align: center;
-            margin: 40px 0;
+            margin: 30px 0;
             backdrop-filter: blur(5px);
             padding: 25px;
             border-radius: 20px;
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--primary-green);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
             z-index: 1;
         }
 
@@ -64,7 +79,7 @@
         }
 
         .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-10px);
             border-color: var(--primary-green);
             box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
         }
@@ -74,12 +89,11 @@
             color: var(--primary-green);
             margin: 20px 0;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
         }
 
         .btn-buy {
             background: var(--primary-green);
-            color: black; /* جعل النص أسود ليكون واضحاً على الأخضر الفاتح */
+            color: black;
             text-decoration: none;
             padding: 12px;
             border-radius: 10px;
@@ -88,38 +102,41 @@
             transition: 0.3s;
         }
 
-        .btn:hover { filter: brightness(1.2); }
-
         h1 { color: var(--primary-green); text-shadow: 0 0 15px var(--primary-green); }
-        h2 { color: #58a6ff; }
     </style>
 </head>
 <body>
 
     <canvas id="matrix-canvas"></canvas>
 
+    <div class="system-status">
+        <div>النظام: <span id="status">نشط (Active)</span></div>
+        <div id="digital-clock">00:00:00</div>
+        <div>الزوار: <span id="visitor-count">1,402</span></div>
+    </div>
+
     <div class="header">
-        <h1>بوابة حسين التقنية 🛡️</h1>
-        <p>مرحباً بك في عالم التشفير والبرمجة.. اختر خدمتك الآن</p>
+        <h1>بوابة حسين التجارية 🛡️</h1>
+        <p>أنظمة حماية متقدمة وحلول برمجية ذكية</p>
     </div>
 
     <div class="services-grid">
         <div class="service-card">
-            <h2>فحص الثغرات الأمنية</h2>
-            <p>تحليل شامل للمواقع واكتشاف الثغرات البرمجية وحمايتها.</p>
+            <h2>فحص الثغرات</h2>
+            <p>تحليل شامل واكتشاف الثغرات البرمجية وحمايتها.</p>
             <div class="price">25,000 د.ع</div>
             <a href="https://t.me/Yssine111?text=مرحباً حسين، أريد طلب خدمة فحص الثغرات" class="btn-buy">طلب الخدمة</a>
         </div>
 
         <div class="service-card">
-            <h2>برمجة سكريبتات Python</h2>
-            <p>تصميم أدوات أتمتة مخصصة وبرمجيات ذكية لتسريع أعمالك.</p>
+            <h2>برمجة Python</h2>
+            <p>تصميم أدوات أتمتة مخصصة وبرمجيات ذكية.</p>
             <div class="price">15,000 د.ع</div>
             <a href="https://t.me/Yssine111?text=مرحباً حسين، أريد طلب خدمة برمجة سكريبت بايثون" class="btn-buy">طلب الخدمة</a>
         </div>
 
         <div class="service-card">
-            <h2>دعم أنظمة Linux</h2>
+            <h2>دعم Linux</h2>
             <p>حل مشاكل التنصيب وتهيئة الأدوات داخل لينكس وتيرمكس.</p>
             <div class="price">10,000 د.ع</div>
             <a href="https://t.me/Yssine111?text=مرحباً حسين، أحتاج مساعدة في نظام لينكس/تيرمكس" class="btn-buy">طلب الخدمة</a>
@@ -127,46 +144,48 @@
     </div>
 
     <script>
-        // كود الجافاسكريبت لصناعة مطر الماتريكس
+        // كود الساعة الرقمية
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ":" + 
+                               now.getMinutes().toString().padStart(2, '0') + ":" + 
+                               now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('digital-clock').textContent = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // كود عداد الزوار الوهمي (يزداد كل فترة ليعطي واقعية)
+        let count = 1402;
+        setInterval(() => {
+            count += Math.floor(Math.random() * 3);
+            document.getElementById('visitor-count').textContent = count.toLocaleString();
+        }, 5000);
+
+        // كود الماتريكس
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+        const letters = "01"; // جعلتها 0 و 1 لتعطي طابع Binary أكثر فخامة
         const fontSize = 16;
         const columns = canvas.width / fontSize;
         const drops = [];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
-        }
+        for (let i = 0; i < columns; i++) drops[i] = 1;
 
         function draw() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#0F0"; // أخضر الماتريكس
+            ctx.fillStyle = "#0F0";
             ctx.font = fontSize + "px arial";
-
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
-
         setInterval(draw, 33);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
     </script>
 
 </body>
