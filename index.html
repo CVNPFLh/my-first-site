@@ -3,71 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة حسين التقنية</title>
+    <title>بوابة حسين التقنية | Professional Profile</title>
     <style>
-        /* تصميم مستوحى من واجهات الأمن السيبراني */
+        :root {
+            --primary-green: #2ea043;
+            --dark-bg: #0d1117;
+            --card-bg: #161b22;
+            --text-gray: #8b949e;
+        }
+
         body {
-            background-color: #0d1117; /* لون داكن فخم */
+            background-color: var(--dark-bg);
             color: #c9d1d9;
             font-family: 'Segoe UI', Tahoma, sans-serif;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .profile-card {
-            background: #161b22;
-            padding: 40px;
+            background: var(--card-bg);
+            padding: 30px;
             border-radius: 20px;
-            border: 2px solid #238636; /* إطار أخضر تقني */
+            border: 1px solid #30363d;
             text-align: center;
-            box-shadow: 0 0 20px rgba(35, 134, 54, 0.4);
-            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 400px;
             width: 85%;
-            transition: 0.3s;
-        }
-
-        .profile-card:hover {
-            box-shadow: 0 0 30px rgba(35, 134, 54, 0.6);
-            transform: scale(1.02);
+            border-top: 4px solid var(--primary-green);
         }
 
         h1 {
-            color: #2ea043; /* لون أخضر زاهي */
+            color: var(--primary-green);
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #8b949e;
-        }
-
-        .status {
-            background: #0d1117;
-            padding: 12px;
-            border-radius: 10px;
-            font-family: 'Courier New', Courier, monospace;
+        /* تأثير الكتابة الآلية */
+        .typing-container {
+            font-family: 'Courier New', monospace;
             color: #7ee787;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            min-height: 1.2em;
+        }
+
+        /* المهارات */
+        .skills-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #21262d;
             border: 1px solid #30363d;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #58a6ff;
+            font-weight: bold;
+        }
+
+        /* الأزرار */
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
             font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .btn-telegram { background: #0088cc; color: white; }
+        .btn-python { background: #3776ab; color: white; }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
 
-    <div class="profile-card">
-        <h1>حسين</h1>
-        <p>طالب طموح في تقنية المعلومات 💻</p>
-        <div class="status">
-            > التخصص: الأمن السيبراني & Python
+    <div clنss="profile-card">
+        <hياسين </h1>
+        
+        <div class="typing-container">
+            <span id="typing"></span>
         </div>
-        <br>
-        <p>مرحباً بكم في موقعي الرسمي الأول على الإنترنت!</p>
+        
+        <p>طالب تقنية معلومات | باحث في الأمن السيبراني وتطوير أدوات بايثون.</p>
+
+        <div class="skills-container">
+            <span class="skill-tag">Termux</span>
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">SQLMap</span>
+            <span class="skill-tag">Nmap</span>
+        </div>
+
+        <div class="social-buttons">
+            <a href="https://t.me/YOUR_USERNAME" class="btn btn-telegram">تليجرام</a>
+            <a href="#" class="btn btn-python">أدواتي</a>
+        </div>
     </div>
+
+    <script>
+        // كود برمجي بسيط لجعل النص يكتب نفسه
+        const text = "Cybersecurity Student & Python Developer";
+        let index = 0;
+        function type() {
+            if (index < text.length) {
+                document.getElementById("typing").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, 100);
+            }
+        }
+        window.onload = type;
+    </script>
 
 </body>
 </html>
