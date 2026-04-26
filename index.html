@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر حسين للخدمات التقنية</title>
+    <title>متجر حسين للخدمات التقنية | Yssine111</title>
     <style>
         :root {
             --primary-green: #2ea043;
@@ -31,90 +31,98 @@
             text-align: center;
             margin-bottom: 40px;
             backdrop-filter: blur(10px);
-            padding: 20px;
+            padding: 25px;
             border-radius: 20px;
-            background: rgba(13, 17, 23, 0.7);
+            background: rgba(13, 17, 23, 0.8);
             border: 1px solid var(--primary-green);
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+
+        h1 { color: var(--primary-green); margin-bottom: 10px; }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
         }
 
         .service-card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #30363d;
+            backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            transition: 0.3s;
+            transition: 0.4s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-12px);
             border-color: var(--primary-green);
-            box-shadow: 0 10px 20px rgba(46, 160, 67, 0.2);
+            box-shadow: 0 15px 30px rgba(46, 160, 67, 0.3);
         }
 
         .price {
-            font-size: 1.5rem;
-            color: var(--primary-green);
-            margin: 15px 0;
+            font-size: 1.6rem;
+            color: #7ee787;
+            margin: 20px 0;
             font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         .btn-buy {
             background: var(--primary-green);
             color: white;
             text-decoration: none;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             font-weight: bold;
             transition: 0.3s;
+            display: block;
         }
 
         .btn-buy:hover {
-            filter: brightness(1.2);
+            background: #3fb950;
+            transform: scale(1.05);
         }
 
         h2 { color: #58a6ff; margin-top: 0; }
+        p { color: #8b949e; line-height: 1.6; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>متجر حسين للخدمات التقنية 🛡️</h1>
-        <p>نقدم أفضل الحلول البرمجية والأمنية بأحدث التقنيات</p>
+        <h1>بوابة حسين التجارية 🛡️</h1>
+        <p>خبير في الأمن السيبراني ومطور أدوات بايثون. اختر خدمتك لنبدأ العمل فوراً.</p>
     </div>
 
     <div class="services-grid">
         <div class="service-card">
-            <h2>فحص الثغرات</h2>
-            <p>فحص شامل لموقعك أو تطبيقك واكتشاف الثغرات الأمنية قبل الهكرز.</p>
+            <h2>فحص الثغرات الأمنية</h2>
+            <p>تحليل شامل للمواقع واكتشاف الثغرات البرمجية وحمايتها من الاختراق.</p>
             <div class="price">25,000 د.ع</div>
-            <a href="https://t.me/YOUR_USERNAME" class="btn-buy">طلب الخدمة الآن</a>
+            <a href="https://t.me/Yssine111?text=مرحباً حسين، أريد طلب خدمة فحص الثغرات" class="btn-buy">طلب الخدمة</a>
         </div>
 
         <div class="service-card">
-            <h2>أدوات Python</h2>
-            <p>برمجة أدوات مخصصة بلغة بايثون لتنفيذ المهام المتكررة أو اختبار الاختراق.</p>
+            <h2>برمجة سكريبتات Python</h2>
+            <p>تصميم أدوات أتمتة مخصصة وبرمجيات ذكية لتسريع أعمالك التقنية.</p>
             <div class="price">15,000 د.ع</div>
-            <a href="https://t.me/YOUR_USERNAME" class="btn-buy">طلب الخدمة الآن</a>
+            <a href="https://t.me/Yssine111?text=مرحباً حسين، أريد طلب خدمة برمجة سكريبت بايثون" class="btn-buy">طلب الخدمة</a>
         </div>
 
         <div class="service-card">
-            <h2>تنصيب أنظمة Linux</h2>
-            <p>المساعدة في تنصيب Kali Linux أو Termux مع تثبيت كافة الأدوات الأساسية.</p>
+            <h2>دعم أنظمة Linux & Termux</h2>
+            <p>حل مشاكل التنصيب، تهيئة الأدوات، وتأمين بيئة العمل داخل لينكس.</p>
             <div class="price">10,000 د.ع</div>
-            <a href="https://t.me/YOUR_USERNAME" class="btn-buy">طلب الخدمة الآن</a>
+            <a href="https://t.me/Yssine111?text=مرحباً حسين، أحتاج مساعدة في نظام لينكس/تيرمكس" class="btn-buy">طلب الخدمة</a>
         </div>
     </div>
 
