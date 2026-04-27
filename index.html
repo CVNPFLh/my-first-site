@@ -3,159 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مركز حسين للتقنية | Hussein Tech Hub</title>
-    <meta name="description" content="منصة حسين التجارية لخدمات الأمن السيبراني، البرمجة بلغة بايثون، وأدوات التشفير الاحترافية.">
+    <title>حسين للمعلوماتية | آراء العملاء والخدمات</title>
     
     <style>
         :root {
             --primary-green: #00ff41;
-            --accent-blue: #0080ff;
             --dark-bg: #050505;
-            --card-bg: rgba(15, 15, 15, 0.95);
+            --card-bg: rgba(20, 20, 20, 0.9);
         }
 
         body {
             background-color: var(--dark-bg);
             color: #e0e0e0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             margin: 0;
             overflow-x: hidden;
         }
 
-        /* خلفية الماتريكس الثنائية */
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.6; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
 
-        /* شريط الحالة العلوي */
+        /* تحسين شريط الحالة للهاتف */
         .status-bar {
-            background: rgba(0, 255, 65, 0.1);
+            background: rgba(0, 0, 0, 0.8);
             border-bottom: 1px solid var(--primary-green);
-            padding: 10px 20px;
+            padding: 8px 15px;
             display: flex;
             justify-content: space-between;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             color: var(--primary-green);
             position: sticky; top: 0; z-index: 100;
             backdrop-filter: blur(10px);
+            direction: ltr; 
         }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 20px; text-align: center; }
 
-        .main-header {
-            padding: 40px 20px;
-            border: 1px dashed var(--primary-green);
-            border-radius: 15px;
-            background: rgba(0,0,0,0.8);
-            margin-bottom: 40px;
-        }
-
-        .main-header h1 { 
-            font-size: 2.5rem; 
+        .section-title {
             color: var(--primary-green);
-            text-shadow: 0 0 20px var(--primary-green);
+            margin: 40px 0 20px;
+            text-shadow: 0 0 10px var(--primary-green);
+            font-size: 1.8rem;
         }
 
-        /* تنسيق الشبكات (الخدمات والمعرض) */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid #222;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
+            transition: 0.3s;
         }
 
         .card:hover {
-            transform: translateY(-10px);
             border-color: var(--primary-green);
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2);
+            transform: translateY(-5px);
         }
 
-        /* أداة التشفير التفاعلية */
-        .tool-box {
-            background: #111;
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid var(--accent-blue);
-            margin: 40px 0;
+        /* تنسيق آراء العملاء */
+        .review-card {
             text-align: right;
+            border-right: 3px solid var(--primary-green);
         }
 
-        textarea {
-            width: 100%;
-            background: #000;
-            color: var(--primary-green);
-            border: 1px solid #333;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            margin: 10px 0;
-        }
+        .stars { color: #ffca08; margin-bottom: 10px; font-size: 1.2rem; }
+        .client-name { color: var(--primary-green); font-weight: bold; display: block; margin-top: 10px; }
 
-        button {
-            background: var(--primary-green);
-            color: #000;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover { background: #fff; }
-
-        /* معرض الصور */
-        .portfolio-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .price-tag {
-            display: block;
-            font-size: 1.5rem;
-            color: var(--primary-green);
-            margin: 15px 0;
-            font-weight: bold;
-        }
-
+        .price { font-size: 1.5rem; color: var(--primary-green); margin: 15px 0; font-weight: bold; }
+        
         .btn-order {
             text-decoration: none;
-            background: transparent;
-            border: 1px solid var(--primary-green);
-            color: var(--primary-green);
+            background: var(--primary-green);
+            color: black;
             padding: 10px 20px;
-            border-radius: 5px;
-            display: inline-block;
-            transition: 0.3s;
+            border-radius: 8px;
+            font-weight: bold;
+            display: block;
         }
 
-        .btn-order:hover { background: var(--primary-green); color: black; }
-
-        /* زر التواصل العائم */
         .floating-chat {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #24A1DE;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
+            position: fixed; bottom: 20px; right: 20px;
+            background: #24A1DE; color: white;
+            padding: 12px 20px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; z-index: 1000;
         }
     </style>
 </head>
@@ -164,93 +100,74 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div class="status-bar">
-        <span>النظام: متصل (Secure Connection)</span>
+        <span>STATUS: SECURE</span>
         <span id="clock">00:00:00</span>
-        <span>الزوار النشطون: <span id="v-count">1,580</span></span>
+        <span>LIVE: <span id="v-count">1,581</span></span>
     </div>
 
     <div class="container">
-        <header class="main-header">
-            <h1>HUSSEIN TECH HUB 🛡️</h1>
-            <p>حلول برمجية ذكية | حماية سيبرانية | تصميم بالذكاء الاصطناعي</p>
-        </header>
+        <h1 style="color: var(--primary-green); text-shadow: 0 0 15px var(--primary-green);">HUSSEIN TECH 🛡️</h1>
 
-        <div class="tool-box">
-            <h2 style="color: var(--accent-blue);">🛠️ أداة التشفير السريع (Base64)</h2>
-            <p>اختبر قوتي البرمجية، اكتب أي نص هنا لتحويله إلى كود مشفر:</p>
-            <textarea id="inputText" rows="3" placeholder="اكتب النص هنا..."></textarea>
-            <button onclick="encryptText()">تشفير النص</button>
-            <textarea id="outputText" rows="3" placeholder="النتيجة ستظهر هنا..." readonly></textarea>
-        </div>
-
-        <h2 style="color: var(--primary-green);">💰 الخدمات التجارية</h2>
+        <h2 class="section-title">🛡️ الخدمات المتاحة</h2>
         <div class="grid">
             <div class="card">
-                <h3>فحص الثغرات (Web Pentesting)</h3>
-                <p>تقرير شامل عن ثغرات موقعك وحلول حمايتها.</p>
-                <span class="price-tag">25,000 د.ع</span>
-                <a href="https://t.me/Yssine111?text=طلب_فحص_ثغرات" class="btn-order">اطلب الآن</a>
+                <h3>فحص الثغرات</h3>
+                <p>تأمين المواقع ضد هجمات SQL و XSS.</p>
+                <div class="price">25,000 د.ع</div>
+                <a href="https://t.me/Yssine111?text=طلب_فحص" class="btn-order">طلب الخدمة</a>
             </div>
             <div class="card">
-                <h3>سكريبتات Python مخصصة</h3>
-                <p>برمجة أدوات أتمتة لـ Termux و Windows.</p>
-                <span class="price-tag">15,000 د.ع</span>
-                <a href="https://t.me/Yssine111?text=طلب_برمجة_سكريبت" class="btn-order">اطلب الآن</a>
+                <h3>برمجة Python</h3>
+                <p>صناعة أدوات أتمتة مخصصة لتيرمكس.</p>
+                <div class="price">15,000 د.ع</div>
+                <a href="https://t.me/Yssine111?text=طلب_برمجة" class="btn-order">طلب الخدمة</a>
             </div>
         </div>
 
-        <h2 style="color: var(--primary-green);">🖼️ معرض الأعمال (AI Portfolio)</h2>
+        <h2 class="section-title">⭐ آراء العملاء</h2>
         <div class="grid">
-            <div class="card">
-                <img src="https://telegra.ph/file/0c6c64673663a8a38a7c2.jpg" class="portfolio-img">
-                <p>فن رقمي: Eren Yeager</p>
+            <div class="card review-card">
+                <div class="stars">★★★★★</div>
+                <p>"تعاملت مع حسين في سكريبت بايثون، العمل كان سريعاً جداً والأداة تعمل بدون أخطاء."</p>
+                <span class="client-name">- مبرمج من البصرة</span>
             </div>
-            <div class="card">
-                <img src="https://telegra.ph/file/69c1181f9b3b246a4e320.jpg" class="portfolio-img">
-                <p>تصاميم Cyber Concept</p>
+            <div class="card review-card">
+                <div class="stars">★★★★★</div>
+                <p>"قام بفحص موقعي واكتشف ثغرات لم أكن أعرفها. أنصح بالتعامل معه للأمان."</p>
+                <span class="client-name">- صاحب متجر إلكتروني</span>
+            </div>
+            <div class="card review-card">
+                <div class="stars">★★★★☆</div>
+                <p>"شخص محترف جداً في التعامل ومتمكن من أدوات تيرمكس ولينكس."</p>
+                <span class="client-name">- طالب تقني</span>
             </div>
         </div>
     </div>
 
-    <a href="https://t.me/Yssine111" class="floating-chat">💬 استشارة فورية</a>
+    <a href="https://t.me/Yssine111" class="floating-chat">💬 راسلني الآن</a>
 
     <script>
-        // ساعة النظام
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').textContent = now.toLocaleTimeString('en-GB');
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // عداد الزوار التفاعلي
-        let visitors = 1580;
+        let visitors = 1581;
         setInterval(() => {
             visitors += Math.floor(Math.random() * 2);
             document.getElementById('v-count').textContent = visitors.toLocaleString();
-        }, 5000);
+        }, 6000);
 
-        // وظيفة التشفير (بايثون داخل المتصفح عبر JS)
-        function encryptText() {
-            const input = document.getElementById('inputText').value;
-            if(input) {
-                const encoded = btoa(unescape(encodeURIComponent(input)));
-                document.getElementById('outputText').value = encoded;
-            }
-        }
-
-        // خلفية الماتريكس
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const letters = "01"; const fontSize = 16;
         const columns = canvas.width / fontSize; const drops = [];
         for (let i = 0; i < columns; i++) drops[i] = 1;
-
         function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = fontSize + "px arial";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = fontSize + "px arial";
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
