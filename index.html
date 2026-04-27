@@ -3,35 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUSSEIN ULTIMATE HUB</title>
+    <title>HUSSEIN ULTIMATE SYSTEM | v23</title>
     <style>
-        :root { --matrix: #00ff41; --hud-blue: #00d2ff; --bg-dark: rgba(10, 10, 10, 0.95); }
+        :root { --matrix: #00ff41; --hud-blue: #00d2ff; --bg-dark: rgba(10, 10, 10, 0.96); }
         body {
             margin: 0; background: #000; color: #fff;
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background: url('https://i.ibb.co/XzC83yY/hacker-mask-poster.jpg') center/cover no-repeat fixed;
         }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.82); z-index: 0; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 0; }
         .content { position: relative; z-index: 1; padding: 15px; max-width: 480px; margin: 0 auto; }
 
-        /* شريط الإحصائيات العلوي */
+        /* شريط الإحصائيات */
         .top-stats {
             display: flex; justify-content: space-around; align-items: center;
-            background: rgba(0,0,0,0.9); border: 1px solid var(--matrix);
+            background: rgba(0,0,0,0.95); border: 1px solid var(--matrix);
             border-radius: 15px; padding: 12px; margin-bottom: 20px;
             font-family: monospace; color: var(--matrix); text-align: center;
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
         }
 
-        /* تصميم البطاقات الموحد */
         .card {
             background: var(--bg-dark); border: 1px solid #333;
             border-radius: 20px; padding: 20px; margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
         }
-        h2, h3 { color: var(--matrix); margin-top: 0; text-shadow: 0 0 10px var(--matrix); }
+        h3 { color: var(--matrix); margin-top: 0; text-shadow: 0 0 8px var(--matrix); font-size: 1.1rem; }
         
-        /* أدوات الإدخال */
         textarea, input {
             width: 100%; background: #050505; border: 1px solid #444;
             color: var(--matrix); padding: 12px; border-radius: 10px;
@@ -41,18 +39,21 @@
         .btn {
             background: var(--matrix); color: #000; border: none;
             padding: 14px; width: 100%; border-radius: 12px;
-            font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s;
+            font-weight: bold; cursor: pointer; margin-top: 10px;
         }
-        .btn:active { transform: scale(0.95); }
 
-        .price-tag { color: var(--matrix); font-size: 1.8rem; font-weight: bold; margin: 15px 0; display: block; }
+        /* سجل العمليات المتحرك */
+        #log-box {
+            background: #000; border: 1px solid #222; border-radius: 10px;
+            padding: 10px; font-family: monospace; font-size: 0.75rem;
+            color: #888; height: 80px; overflow: hidden; line-height: 1.5;
+        }
 
-        /* أداة الترجمة */
-        #google_translate_element { margin-top: 10px; }
-        .goog-te-gadget-simple { background: #000 !important; border: 1px solid var(--matrix) !important; border-radius: 8px !important; padding: 5px !important; }
+        /* معلومات النظام للزائر */
+        .sys-info { font-size: 0.8rem; color: var(--hud-blue); font-family: monospace; margin-top: 5px; }
 
         /* HUD DNA */
-        .dna-vibe { position: fixed; left: 10px; top: 25%; display: flex; flex-direction: column; gap: 4px; opacity: 0.5; }
+        .dna-vibe { position: fixed; left: 10px; top: 20%; display: flex; flex-direction: column; gap: 4px; opacity: 0.4; }
         .dna-bar { width: 15px; height: 3px; background: var(--hud-blue); animation: vibrate 0.6s infinite alternate; }
         @keyframes vibrate { from { transform: scaleX(1); } to { transform: scaleX(2.5); } }
     </style>
@@ -65,7 +66,17 @@
         <div class="top-stats">
             <div>VISITORS:<br><span id="clock">00:00:00</span><br><b>1,405</b></div>
             <div style="font-size: 1.8rem;">🛡️</div>
-            <div>SERVER:<br><b style="color:var(--matrix)">ONLINE</b><br>v2.0</div>
+            <div>SERVER:<br><b style="color:var(--matrix)">ONLINE</b></div>
+        </div>
+
+        <div class="card">
+            <h3>سجل العمليات النشط ⚡</h3>
+            <div id="log-box"></div>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h3>بيانات الوصول الآمن 🔍</h3>
+            <div class="sys-info" id="user-info">جاري فحص مواصفات الجهاز...</div>
         </div>
 
         <div class="card" style="text-align: center;">
@@ -73,23 +84,20 @@
             <div id="google_translate_element"></div>
         </div>
 
-        <h2 style="text-align: center;">الخدمات التجارية</h2>
-        
         <div class="card" style="text-align: center;">
-            <h3 style="border-bottom: 1px solid #222; padding-bottom: 10px;">فحص الثغرات الأمنية</h3>
-            <p style="color:#aaa; font-size:0.9rem;">كشف نقاط الضعف في المواقع والتطبيقات.</p>
-            <span class="price-tag">25,000 د.ع</span>
-            <button class="btn" onclick="location.href='https://t.me/Yssine111'">طلب الخدمة</button>
+            <h3>فحص الثغرات الأمنية</h3>
+            <div style="color:var(--matrix); font-size:1.8rem; font-weight:bold; margin: 10px 0;">25,000 د.ع</div>
+            <button class="btn" onclick="location.href='https://t.me/Yssine111'">طلب الخدمة الآن</button>
         </div>
 
         <div class="card">
             <h3>أداة التشفير 🔐</h3>
-            <textarea id="crypto-in" rows="3" placeholder="أدخل النص هنا..."></textarea>
+            <textarea id="crypt-in" rows="2" placeholder="أدخل النص هنا..."></textarea>
             <div style="display:flex; gap:10px;">
-                <button class="btn" onclick="runCrypto('en')">تشفير</button>
-                <button class="btn" style="background:#222; color:#fff; border:1px solid var(--matrix);" onclick="runCrypto('de')">فك التشفير</button>
+                <button class="btn" onclick="doCrypt('en')">تشفير</button>
+                <button class="btn" style="background:#222; color:#fff; border:1px solid var(--matrix);" onclick="doCrypt('de')">فك التشفير</button>
             </div>
-            <div id="crypto-out" style="margin-top:15px; padding:10px; background:#000; border-radius:10px; color:var(--hud-blue); font-size:0.8rem; direction:ltr; word-break:break-all; min-height:30px;">النتيجة...</div>
+            <div id="crypt-out" style="margin-top:10px; font-size:0.8rem; color:var(--hud-blue); word-break:break-all;"></div>
         </div>
     </div>
 
@@ -102,19 +110,29 @@
 
     <script>
         // ساعة النظام
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB');
-        }, 1000);
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB'); }, 1000);
 
-        // تشفير Base64
-        function runCrypto(mode) {
-            const val = document.getElementById('crypto-in').value;
-            const out = document.getElementById('crypto-out');
-            if(!val) return;
+        // سجل العمليات
+        const logBox = document.getElementById('log-box');
+        const msgs = ["> Initializing security...", "> [OK] Firewall active.", "> Checking for breaches...", "> Encrypting data...", "> [INFO] System stable."];
+        let idx = 0;
+        setInterval(() => {
+            logBox.innerHTML += msgs[idx % msgs.length] + "<br>";
+            logBox.scrollTop = logBox.scrollHeight;
+            idx++;
+            if(logBox.childNodes.length > 8) logBox.removeChild(logBox.firstChild);
+        }, 2500);
+
+        // معلومات النظام
+        document.getElementById('user-info').innerHTML = `OS: ${navigator.platform}<br>Browser: ${navigator.appName}<br>Screen: ${screen.width}x${screen.height}`;
+
+        // التشفير
+        function doCrypt(m) {
+            const i = document.getElementById('crypt-in').value;
+            const o = document.getElementById('crypt-out');
             try {
-                out.innerText = (mode === 'en') ? btoa(unescape(encodeURIComponent(val))) : decodeURIComponent(escape(atob(val)));
-                out.style.color = "var(--hud-blue)";
-            } catch(e) { out.innerText = "خطأ في النص!"; out.style.color = "red"; }
+                o.innerText = (m === 'en') ? btoa(unescape(encodeURIComponent(i))) : decodeURIComponent(escape(atob(i)));
+            } catch(e) { o.innerText = "خطأ في النص!"; }
         }
 
         // بناء HUD DNA
