@@ -3,156 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حسين للمعلوماتية | خدمات الأمن السيبراني والبرمجة</title>
-    <meta name="description" content="الموقع الرسمي للمبرمج حسين - متخصص في الأمن السيبراني، برمجة أدوات Python، ودعم أنظمة Linux في العراق.">
-    <meta name="keywords" content="حسين, مبرمج عراقي, أمن سيبراني, بايثون, تيرمكس, فحص ثغرات, Hussein Tech, Python Iraq">
-    <meta name="author" content="حسين">
-
+    <title>مركز حسين للتقنية | Hussein Tech Hub</title>
+    <meta name="description" content="منصة حسين التجارية لخدمات الأمن السيبراني، البرمجة بلغة بايثون، وأدوات التشفير الاحترافية.">
+    
     <style>
         :root {
             --primary-green: #00ff41;
-            --dark-bg: #000000;
-            --card-bg: rgba(10, 10, 10, 0.9);
+            --accent-blue: #0080ff;
+            --dark-bg: #050505;
+            --card-bg: rgba(15, 15, 15, 0.95);
         }
 
         body {
             background-color: var(--dark-bg);
-            color: #c9d1d9;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             overflow-x: hidden;
+        }
+
+        /* خلفية الماتريكس الثنائية */
+        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.6; }
+
+        /* شريط الحالة العلوي */
+        .status-bar {
+            background: rgba(0, 255, 65, 0.1);
+            border-bottom: 1px solid var(--primary-green);
+            padding: 10px 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        #matrix-canvas {
-            position: fixed;
-            top: 0; left: 0; z-index: -1;
-        }
-
-        .system-status {
-            display: flex; justify-content: space-between;
-            width: 90%; max-width: 1100px;
-            margin-top: 15px; font-family: monospace;
-            color: var(--primary-green); font-size: 0.9rem;
-            background: rgba(0,0,0,0.6); padding: 10px;
-            border-radius: 8px; border: 1px solid rgba(0, 255, 65, 0.3);
-            z-index: 2;
-        }
-
-        .section-title {
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 0.85rem;
             color: var(--primary-green);
-            margin: 40px 0 20px;
-            text-shadow: 0 0 10px var(--primary-green);
-            font-size: 2rem;
-            text-align: center;
-        }
-
-        .services-grid, .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; width: 95%; max-width: 1100px; z-index: 1;
-            margin-bottom: 30px;
-        }
-
-        .service-card, .portfolio-item {
-            background: var(--card-bg);
+            position: sticky; top: 0; z-index: 100;
             backdrop-filter: blur(10px);
-            padding: 20px; border-radius: 15px;
-            border: 1px solid #1a1a1a; transition: 0.4s;
-            text-align: center;
         }
 
-        .service-card:hover, .portfolio-item:hover {
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; text-align: center; }
+
+        .main-header {
+            padding: 40px 20px;
+            border: 1px dashed var(--primary-green);
+            border-radius: 15px;
+            background: rgba(0,0,0,0.8);
+            margin-bottom: 40px;
+        }
+
+        .main-header h1 { 
+            font-size: 2.5rem; 
+            color: var(--primary-green);
+            text-shadow: 0 0 20px var(--primary-green);
+        }
+
+        /* تنسيق الشبكات (الخدمات والمعرض) */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            padding: 25px;
+            border-radius: 15px;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
             transform: translateY(-10px);
             border-color: var(--primary-green);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2);
         }
 
-        .portfolio-item img {
-            width: 100%; height: 200px; object-fit: cover;
-            border-radius: 10px; margin-bottom: 10px;
+        /* أداة التشفير التفاعلية */
+        .tool-box {
+            background: #111;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-blue);
+            margin: 40px 0;
+            text-align: right;
+        }
+
+        textarea {
+            width: 100%;
+            background: #000;
+            color: var(--primary-green);
             border: 1px solid #333;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
         }
 
-        .price { font-size: 1.4rem; color: var(--primary-green); margin: 15px 0; font-weight: bold; }
-        
-        .btn-buy {
-            background: var(--primary-green); color: black;
-            text-decoration: none; padding: 12px;
-            border-radius: 8px; font-weight: bold; display: block;
+        button {
+            background: var(--primary-green);
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
             transition: 0.3s;
         }
 
-        .btn-buy:hover { filter: brightness(1.2); transform: scale(1.02); }
+        button:hover { background: #fff; }
+
+        /* معرض الصور */
+        .portfolio-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .price-tag {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .btn-order {
+            text-decoration: none;
+            background: transparent;
+            border: 1px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn-order:hover { background: var(--primary-green); color: black; }
+
+        /* زر التواصل العائم */
+        .floating-chat {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #24A1DE;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
 
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="system-status">
-        <div>SERVER: ONLINE</div>
-        <div id="digital-clock">00:00:00</div>
-        <div>VISITORS: <span id="visitor-count">1,402</span></div>
+    <div class="status-bar">
+        <span>النظام: متصل (Secure Connection)</span>
+        <span id="clock">00:00:00</span>
+        <span>الزوار النشطون: <span id="v-count">1,580</span></span>
     </div>
 
-    <h2 class="section-title">🛡️ الخدمات التجارية</h2>
-    <div class="services-grid">
-        <div class="service-card">
-            <h3>فحص الثغرات الأمنية</h3>
-            <p>كشف نقاط الضعف في المواقع والتطبيقات.</p>
-            <div class="price">25,000 د.ع</div>
-            <a href="https://t.me/Yssine111?text=مرحباً حسين، أود طلب خدمة فحص الثغرات" class="btn-buy">طلب الخدمة</a>
+    <div class="container">
+        <header class="main-header">
+            <h1>HUSSEIN TECH HUB 🛡️</h1>
+            <p>حلول برمجية ذكية | حماية سيبرانية | تصميم بالذكاء الاصطناعي</p>
+        </header>
+
+        <div class="tool-box">
+            <h2 style="color: var(--accent-blue);">🛠️ أداة التشفير السريع (Base64)</h2>
+            <p>اختبر قوتي البرمجية، اكتب أي نص هنا لتحويله إلى كود مشفر:</p>
+            <textarea id="inputText" rows="3" placeholder="اكتب النص هنا..."></textarea>
+            <button onclick="encryptText()">تشفير النص</button>
+            <textarea id="outputText" rows="3" placeholder="النتيجة ستظهر هنا..." readonly></textarea>
         </div>
-        <div class="service-card">
-            <h3>برمجة أدوات Python</h3>
-            <p>بناء سكريبتات ذكية لأتمتة المهام التقنية.</p>
-            <div class="price">15,000 د.ع</div>
-            <a href="https://t.me/Yssine111?text=مرحباً حسين، أود طلب برمجة سكريبت خاص" class="btn-buy">طلب الخدمة</a>
+
+        <h2 style="color: var(--primary-green);">💰 الخدمات التجارية</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>فحص الثغرات (Web Pentesting)</h3>
+                <p>تقرير شامل عن ثغرات موقعك وحلول حمايتها.</p>
+                <span class="price-tag">25,000 د.ع</span>
+                <a href="https://t.me/Yssine111?text=طلب_فحص_ثغرات" class="btn-order">اطلب الآن</a>
+            </div>
+            <div class="card">
+                <h3>سكريبتات Python مخصصة</h3>
+                <p>برمجة أدوات أتمتة لـ Termux و Windows.</p>
+                <span class="price-tag">15,000 د.ع</span>
+                <a href="https://t.me/Yssine111?text=طلب_برمجة_سكريبت" class="btn-order">اطلب الآن</a>
+            </div>
+        </div>
+
+        <h2 style="color: var(--primary-green);">🖼️ معرض الأعمال (AI Portfolio)</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://telegra.ph/file/0c6c64673663a8a38a7c2.jpg" class="portfolio-img">
+                <p>فن رقمي: Eren Yeager</p>
+            </div>
+            <div class="card">
+                <img src="https://telegra.ph/file/69c1181f9b3b246a4e320.jpg" class="portfolio-img">
+                <p>تصاميم Cyber Concept</p>
+            </div>
         </div>
     </div>
 
-    <h2 class="section-title">🎨 معرض المشاريع</h2>
-    <div class="portfolio-grid">
-        <div class="portfolio-item">
-            <img src="https://telegra.ph/file/0c6c64673663a8a38a7c2.jpg" alt="Eren Yeager Artwork">
-            <p>فن رقمي: إيرين ييغر</p>
-        </div>
-        <div class="portfolio-item">
-            <img src="https://telegra.ph/file/69c1181f9b3b246a4e320.jpg" alt="Cyber Security Concept">
-            <p>مفهوم الاختراق الأخلاقي</p>
-        </div>
-    </div>
+    <a href="https://t.me/Yssine111" class="floating-chat">💬 استشارة فورية</a>
 
     <script>
-        // الساعة الرقمية
+        // ساعة النظام
         function updateClock() {
             const now = new Date();
-            document.getElementById('digital-clock').textContent = now.toLocaleTimeString('en-GB');
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-GB');
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
-        // عداد الزوار
-        let count = 1402;
+        // عداد الزوار التفاعلي
+        let visitors = 1580;
         setInterval(() => {
-            count += Math.floor(Math.random() * 2);
-            document.getElementById('visitor-count').textContent = count.toLocaleString();
-        }, 8000);
+            visitors += Math.floor(Math.random() * 2);
+            document.getElementById('v-count').textContent = visitors.toLocaleString();
+        }, 5000);
 
-        // خلفية الماتريكس (0/1)
+        // وظيفة التشفير (بايثون داخل المتصفح عبر JS)
+        function encryptText() {
+            const input = document.getElementById('inputText').value;
+            if(input) {
+                const encoded = btoa(unescape(encodeURIComponent(input)));
+                document.getElementById('outputText').value = encoded;
+            }
+        }
+
+        // خلفية الماتريكس
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const letters = "01"; const fontSize = 16;
         const columns = canvas.width / fontSize; const drops = [];
         for (let i = 0; i < columns; i++) drops[i] = 1;
+
         function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0"; ctx.font = fontSize + "px arial";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = fontSize + "px arial";
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
