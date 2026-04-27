@@ -3,53 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة حسين التقنية | HUSSEIN OS v11</title>
+    <title>بوابة حسين التقنية | HUSSEIN OS</title>
     <style>
-        :root {
-            --primary-green: #00ff41;
-            --dark-bg: #010101;
-            --panel-bg: rgba(5, 5, 5, 0.98);
+        :root { --green: #00ff41; --bg: #000; }
+        body { background: var(--bg); color: #fff; font-family: monospace; margin: 0; overflow-x: hidden; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
+        
+        .status-bar { border-bottom: 1px solid var(--green); padding: 8px; display: flex; justify-content: space-between; font-size: 12px; color: var(--green); }
+        
+        .side-nav { position: fixed; left: 10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 15px; z-index: 100; }
+        .icon { width: 45px; height: 45px; border: 1px solid var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #000; cursor: pointer; color: var(--green); }
+
+        .panel { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: rgba(0,0,0,0.95); border-right: 1px solid var(--green); transition: 0.4s; z-index: 101; padding: 20px; box-sizing: border-box; }
+        .panel.active { left: 0; }
+        .close { color: red; cursor: pointer; border: 1px solid red; padding: 2px 8px; border-radius: 4px; float: left; }
+
+        .container { text-align: center; padding: 40px 20px; }
+        .terminal { background: #050505; border: 1px solid #222; padding: 15px; text-align: left; direction: ltr; color: var(--green); font-size: 13px; min-height: 80px; border-radius: 8px; margin: 20px 0; }
+        .card { border: 1px solid #333; padding: 15px; border-radius: 8px; background: rgba(10,10,10,0.8); }
+        .btn { background: var(--green); color: #000; border: none; padding: 10px; width: 100%; font-weight: bold; margin-top: 10px; border-radius: 5px; cursor: pointer; text-decoration: none; display: block; }
+    </style>
+</head>
+<body>
+
+    <canvas id="m"></canvas>
+
+    <div class="status-bar">
+        <span>SYSTEM: ONLINE</span>
+        <span id="clk">00:00:00</span>
+    </div>
+
+    <div class="side-nav">
+        <div class="icon" onclick="openP('p1')">💀</div>
+        <div class="icon" onclick="openP('p2')">🕒</div>
+        <div class="icon" onclick="location.href='https://t.me/Yssine111'">💬</div>
+    </div>
+
+    <div id="p1" class="panel">
+        <span class="close" onclick="closeP()">X</span>
+        <h3 style="color:var(--green); margin-top:40px;">وحدة الأدوات</h3>
+        <button class="btn" onclick="alert('كلمة السر: ' + Math.random().toString(36).slice(-8))">توليد كلمة سر</button>
+        <div class="card" style="margin-top:20px;">
+            <p style="font-size:12px;">تحويل النص لثنائي:</p>
+            <input type="text" id="binIn" style="width:100%; background:#000; color:cyan; border:1px solid #444;" oninput="document.getElementById('binOut').innerText = this.value.split('').map(c => c.charCodeAt(0).toString(2)).join(' ')">
+            <div id="binOut" style="font-size:10px; color:cyan; margin-top:5px; word-break:break-all;"></div>
+        </div>
+    </div>
+
+    <div id="p2" class="panel">
+        <span class="close" onclick="closeP()">X</span>
+        <h3 style="color:var(--green); margin-top:40px;">ساعة الهكر</h3>
+        <div id="big-clk" style="font-size:24px; color:var(--green); text-align:center; padding:20px; border:1px solid var(--green);">00:00:00</div>
+    </div>
+
+    <div class="container">
+        <h1 style="text-shadow: 0 0 10px var(--green);">HUSSEIN HUB</h1>
+        <div style="font-size:50px;">🛡️</div>
+        <div class="terminal" id="term"></div>
+        <div class="card">
+            <p>لخدمات البرمجة والأمن السيبراني</p>
+            <a href="https://t.me/Yssine111" class="btn">تواصل تليجرام</a>
+        </div>
+    </div>
+
+    <script>
+        // فتح وإغلاق النوافذ
+        function openP(id) { closeP(); document.getElementById(id).classList.add('active'); }
+        function closeP() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); }
+
+        // الساعة
+        setInterval(() => {
+            let d = new Date();
+            let t = d.toLocaleTimeString('en-GB');
+            document.getElementById('clk').innerText = t;
+            if(document.getElementById('big-clk')) document.getElementById('big-clk').innerText = t + ":" + Math.floor(d.getMilliseconds()/10);
+        }, 50);
+
+        // التيرمكس
+        let lines = ["> Initializing...", "> Access Granted.", "> Welcome Hussein."], i = 0;
+        function type() {
+            if(i < lines.length) {
+                document.getElementById('term').innerHTML += lines[i] + "<br>";
+                i++; setTimeout(type, 1000);
+            }
         }
+        type();
 
-        body {
-            background-color: var(--dark-bg); color: #e0e0e0;
-            font-family: monospace; margin: 0; overflow-x: hidden;
+        // الماتريكس
+        const c = document.getElementById('m');
+        const ctx = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        const drops = Array(Math.floor(c.width/16)).fill(1);
+        function draw() {
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
+            ctx.fillStyle = "#0F0";
+            drops.forEach((y, x) => {
+                ctx.fillText(Math.floor(Math.random()*2), x*16, y*16);
+                if(y*16 > c.height && Math.random() > 0.975) drops[x] = 0;
+                drops[x]++;
+            });
         }
-
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
-
-        .status-bar {
-            background: #000; border-bottom: 1px solid var(--primary-green);
-            padding: 8px; display: flex; justify-content: space-between;
-            font-size: 0.7rem; color: var(--primary-green); position: sticky; top: 0; z-index: 1000;
-            direction: ltr;
-        }
-
-        /* القائمة الجانبية */
-        .side-nav {
-            position: fixed; left: 10px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 15px; z-index: 1001;
-        }
-
-        .nav-icon {
-            background: #000; border: 1px solid var(--primary-green);
-            color: var(--primary-green); width: 45px; height: 45px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,255,65,0.2); font-size: 1.2rem;
-        }
-
-        /* النوافذ الجانبية */
-        .side-panel {
-            position: fixed; top: 0; bottom: 0; left: -100%; width: 85%; max-width: 320px;
-            background: var(--panel-bg); border-right: 2px solid var(--primary-green);
-            z-index: 1002; transition: 0.4s ease-in-out; padding: 25px; 
-            box-shadow: 10px 0 30px rgba(0,0,0,0.9); overflow-y: auto;
-        }
-
-        .side-panel.active { left: 0; }
-        .close-btn { color: #ff4141; float: left; cursor: pointer; border: 1px solid #ff4141; padding: 2px 8px; border-radius: 5px; }
-
-        /* ستايل الأدوات */
-        .hacker-clock { font-size: 1.5rem; color: var(--primary-green); text-shadow: 0 0 10px var(--primary-green); background: #000; padding: 10px; border-radius: 5px; border: 1px solid #333; display: inline-block; direction: ltr; margin: 10px 0; }
-        .terminal-box { background: #000; border: 1px solid #222; border-radius: 10px; padding: 15px; height: 110px; text-align: left; direction: ltr; color: var(--primary-green); font-size: 0.8rem; overflow: hidden; margin: 15px 0; }
-        .tool-card { background: rgba(2
+        setInterval(draw, 33);
+    </script>
+</body>
+</html>
