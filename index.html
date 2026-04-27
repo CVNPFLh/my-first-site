@@ -1,61 +1,91 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUSSEIN HUD INTERFACE</title>
+    <title>بوابة حسين السيبرانية | HUD v15 PRO</title>
     <style>
-        body {
-            margin: 0; background: #000; color: #00ff41;
-            font-family: 'Courier New', monospace; overflow: hidden;
-            background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80') center/cover;
+        :root {
+            --green: #00ff41;
+            --blue: #00d2ff;
+            --red: #ff3c3c;
         }
 
-        /* طبقة التعتيم لجعل العناصر تبرز */
+        body {
+            margin: 0; background: #000; color: var(--green);
+            font-family: 'Courier New', monospace; overflow: hidden;
+            /* تم تحديث رابط الخلفية ليشير إلى الصورة التي أرسلتها مباشرة */
+            background: url('https://i.ibb.co/XzC83yY/hacker-mask-poster.jpg') center/cover no-repeat fixed;
+        }
+
+        /* طبقة التعتيم لجعل العناصر تبرز وتطبيق Glow Effect */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7); z-index: 0;
         }
 
-        /* إطار النظام الرئيسي */
+        /* إطار النظام الرئيسي (Neon Style) */
         .hud-container {
             position: relative; z-index: 1; height: 100vh;
-            border: 2px solid rgba(0, 255, 65, 0.2); box-sizing: border-box;
+            border: 1px solid rgba(0, 255, 65, 0.15); box-sizing: border-box;
             display: flex; flex-direction: column; justify-content: space-between; padding: 20px;
         }
 
-        /* الأقراص الدوارة (مثل التي في أعلى الصورة) */
+        /* القرص الدوار العلوي (radar) */
         .radar {
             position: absolute; top: 20px; right: 20px;
-            width: 100px; height: 100px; border: 2px solid var(--green);
+            width: 80px; height: 80px; border: 1px solid var(--blue);
             border-radius: 50%; border-style: dashed;
-            animation: rotate 10s linear infinite;
+            animation: rotate 15s linear infinite; opacity: 0.7;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
         }
 
-        /* نافذة البيانات المركزية */
+        /* نافذة البيانات المركزية المستوحاة من شاشة اللابتوب في صورتك */
         .data-window {
-            border: 1px solid #00d2ff; background: rgba(0, 210, 255, 0.1);
-            padding: 10px; width: 250px; position: absolute; top: 20%; left: 50%;
-            transform: translateX(-50%); box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+            border: 1px solid var(--red); background: rgba(255, 60, 60, 0.05);
+            padding: 15px; width: 280px; position: absolute; top: 30%; left: 50%;
+            transform: translateX(-50%); box-shadow: 0 0 20px rgba(255, 60, 60, 0.2);
+            text-align: left; direction: ltr;
         }
 
-        /* الموجات الصوتية المتحركة (أسفل الصورة) */
+        /* الموجات الصوتية المتحركة (أسفل) */
         .waves-container {
-            display: flex; align-items: flex-end; gap: 3px; height: 50px; justify-content: center;
+            display: flex; align-items: flex-end; gap: 3px; height: 60px; justify-content: center;
+            margin-bottom: 10px; opacity: 0.8;
         }
         .bar {
-            width: 4px; background: #00d2ff;
+            width: 3px; background: var(--green);
             animation: wave 0.5s ease-in-out infinite alternate;
+            box-shadow: 0 0 5px var(--green);
         }
 
+        /* نظام القوائم الجانبية المعتاد */
+        .side-nav {
+            position: fixed; left: 10px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px; z-index: 100;
+        }
+        .nav-icon {
+            background: #000; border: 1px solid var(--green);
+            color: var(--green); width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: 0.3s; font-size: 1.2rem; box-shadow: 0 0 10px rgba(0,255,65,0.2);
+        }
+
+        /* التحريكات */
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes wave { from { height: 10px; } to { height: 50px; } }
-
-        .system-failure {
-            color: #ff4141; font-weight: bold; text-align: center;
-            animation: blink 0.8s infinite; margin-top: 10px;
-        }
+        @keyframes wave { from { height: 8px; } to { height: 60px; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .critical-alert {
+            color: var(--red); font-weight: bold; text-align: center;
+            animation: blink 0.6s infinite; margin-top: 15px;
+            text-shadow: 0 0 10px #ff3c3c; font-size: 14px;
+        }
+        .btn-telegram {
+            display: block; width: 100%; background: var(--green); color: black;
+            text-align: center; padding: 10px; margin-top: 20px; border-radius: 5px;
+            text-decoration: none; font-weight: bold; font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -64,34 +94,36 @@
     <div class="hud-container">
         <div class="radar"></div>
 
-        <div class="data-window">
-            <div style="font-size: 10px; border-bottom: 1px solid #00d2ff; margin-bottom: 5px;">SERVER STATUS</div>
-            <div id="ip-data">IP: 236.248.23.19</div>
-            <div class="system-failure">SYSTEM FAILURE</div>
-            <div style="font-size: 9px; margin-top: 10px;">100000110011...</div>
+        <div class="side-nav">
+            <div class="nav-icon" onclick="alert('وحدة الأوامر قيد التشغيل...')">💀</div>
+            <div class="nav-icon" onclick="alert('الساعة السيبرانية متزامنة')">🕒</div>
+            <a href="https://t.me/Yssine111" class="nav-icon" style="text-decoration:none;">💬</a>
         </div>
 
-        <div style="margin-bottom: 50px;">
+        <div class="data-window">
+            <div style="font-size: 11px; border-bottom: 1px solid var(--red); margin-bottom: 8px; color: var(--red);">TARGET_INFO_SYSTEM</div>
+            <div style="font-size: 12px; color:white;">STATUS: INFECTED_SYSTEM</div>
+            <div style="font-size: 12px; color:white;">USER: ADMIN_ACCESS</div>
+            <div style="font-size: 12px; color:white;">LOC: Iraq/Anbar</div>
+            <div class="critical-alert">☣️ BIOHAZARD PROTOCOL ☣️</div>
+            <a href="https://t.me/Yssine111" class="btn-telegram">تواصل للطلب</a>
+        </div>
+
+        <div style="margin-bottom: 30px;">
             <div class="waves-container" id="waves"></div>
-            <p style="text-align: center; font-size: 12px; letter-spacing: 5px;">ANALYZING VOICE PATTERN...</p>
+            <p style="text-align: center; font-size: 11px; letter-spacing: 3px; color: var(--green); text-shadow: 0 0 5px var(--green);">ANALYZING NETWORK TRAFFIC v3.0</p>
         </div>
     </div>
 
     <script>
         // إنشاء أعمدة الموجات برمجياً
         const container = document.getElementById('waves');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 40; i++) {
             const bar = document.createElement('div');
             bar.className = 'bar';
-            bar.style.animationDelay = `${Math.random() * 0.5}s`;
+            bar.style.animationDelay = `${Math.random() * 0.6}s`;
             container.appendChild(bar);
         }
-
-        // تحديث أرقام عشوائية
-        setInterval(() => {
-            const data = document.querySelector('.data-window div:last-child');
-            data.innerText = Math.random().toString(2).substr(2, 15);
-        }, 100);
     </script>
 </body>
 </html>
