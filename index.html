@@ -3,127 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة حسين السيبرانية | HUD v15 PRO</title>
+    <title>بوابة حسين التقنية | Classic Matrix v16</title>
     <style>
         :root {
-            --green: #00ff41;
-            --blue: #00d2ff;
-            --red: #ff3c3c;
+            --primary-green: #00ff41;
+            --dark-bg: #010101;
+            --panel-bg: rgba(0, 0, 0, 0.95);
         }
 
         body {
-            margin: 0; background: #000; color: var(--green);
-            font-family: 'Courier New', monospace; overflow: hidden;
-            /* تم تحديث رابط الخلفية ليشير إلى الصورة التي أرسلتها مباشرة */
-            background: url('https://i.ibb.co/XzC83yY/hacker-mask-poster.jpg') center/cover no-repeat fixed;
+            background-color: var(--dark-bg); color: var(--primary-green);
+            font-family: monospace; margin: 0; overflow-x: hidden;
         }
 
-        /* طبقة التعتيم لجعل العناصر تبرز وتطبيق Glow Effect */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); z-index: 0;
+        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
+
+        .status-bar {
+            background: #000; border-bottom: 1px solid var(--primary-green);
+            padding: 8px; display: flex; justify-content: space-between;
+            font-size: 0.7rem; color: var(--primary-green); position: sticky; top: 0; z-index: 1000;
+            direction: ltr;
         }
 
-        /* إطار النظام الرئيسي (Neon Style) */
-        .hud-container {
-            position: relative; z-index: 1; height: 100vh;
-            border: 1px solid rgba(0, 255, 65, 0.15); box-sizing: border-box;
-            display: flex; flex-direction: column; justify-content: space-between; padding: 20px;
-        }
-
-        /* القرص الدوار العلوي (radar) */
-        .radar {
-            position: absolute; top: 20px; right: 20px;
-            width: 80px; height: 80px; border: 1px solid var(--blue);
-            border-radius: 50%; border-style: dashed;
-            animation: rotate 15s linear infinite; opacity: 0.7;
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
-        }
-
-        /* نافذة البيانات المركزية المستوحاة من شاشة اللابتوب في صورتك */
-        .data-window {
-            border: 1px solid var(--red); background: rgba(255, 60, 60, 0.05);
-            padding: 15px; width: 280px; position: absolute; top: 30%; left: 50%;
-            transform: translateX(-50%); box-shadow: 0 0 20px rgba(255, 60, 60, 0.2);
-            text-align: left; direction: ltr;
-        }
-
-        /* الموجات الصوتية المتحركة (أسفل) */
-        .waves-container {
-            display: flex; align-items: flex-end; gap: 3px; height: 60px; justify-content: center;
-            margin-bottom: 10px; opacity: 0.8;
-        }
-        .bar {
-            width: 3px; background: var(--green);
-            animation: wave 0.5s ease-in-out infinite alternate;
-            box-shadow: 0 0 5px var(--green);
-        }
-
-        /* نظام القوائم الجانبية المعتاد */
+        /* القائمة الجانبية الكلاسيكية */
         .side-nav {
             position: fixed; left: 10px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 15px; z-index: 100;
+            display: flex; flex-direction: column; gap: 15px; z-index: 1001;
         }
+
         .nav-icon {
-            background: #000; border: 1px solid var(--green);
-            color: var(--green); width: 45px; height: 45px; border-radius: 50%;
+            background: #000; border: 1px solid var(--primary-green);
+            color: var(--primary-green); width: 45px; height: 45px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: 0.3s; font-size: 1.2rem; box-shadow: 0 0 10px rgba(0,255,65,0.2);
+            box-shadow: 0 0 10px rgba(0,255,65,0.3); font-size: 1.2rem;
         }
 
-        /* التحريكات */
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes wave { from { height: 8px; } to { height: 60px; } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        /* النوافذ الجانبية */
+        .side-panel {
+            position: fixed; top: 0; bottom: 0; left: -100%; width: 85%; max-width: 320px;
+            background: var(--panel-bg); border-right: 2px solid var(--primary-green);
+            z-index: 1002; transition: 0.4s ease-in-out; padding: 25px; 
+            box-shadow: 10px 0 30px rgba(0,0,0,1); overflow-y: auto;
+        }
 
-        .critical-alert {
-            color: var(--red); font-weight: bold; text-align: center;
-            animation: blink 0.6s infinite; margin-top: 15px;
-            text-shadow: 0 0 10px #ff3c3c; font-size: 14px;
+        .side-panel.active { left: 0; }
+        .close-btn { color: #ff4141; float: left; cursor: pointer; border: 1px solid #ff4141; padding: 2px 8px; border-radius: 5px; }
+
+        /* ستايلات الأدوات */
+        .terminal-box { 
+            background: rgba(0,0,0,0.8); border: 1px solid var(--primary-green); 
+            padding: 15px; min-height: 100px; text-align: left; direction: ltr; 
+            color: var(--primary-green); font-size: 0.85rem; margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(0,255,65,0.1);
         }
-        .btn-telegram {
-            display: block; width: 100%; background: var(--green); color: black;
-            text-align: center; padding: 10px; margin-top: 20px; border-radius: 5px;
-            text-decoration: none; font-weight: bold; font-size: 14px;
-        }
+
+        .tool-card { border: 1px solid #333; padding: 12px; border-radius: 5px; margin-top: 15px; text-align: right; }
+        input { width: 100%; background: #000; border: 1px solid var(--primary-green); color: var(--primary-green); padding: 8px; margin-top: 5px; }
+        .btn { width: 100%; background: var(--primary-green); color: black; border: none; padding: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+
+        .glitch-title { font-size: 2rem; font-weight: bold; text-shadow: 0 0 10px var(--primary-green); margin-top: 50px; }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
-    
-    <div class="hud-container">
-        <div class="radar"></div>
 
-        <div class="side-nav">
-            <div class="nav-icon" onclick="alert('وحدة الأوامر قيد التشغيل...')">💀</div>
-            <div class="nav-icon" onclick="alert('الساعة السيبرانية متزامنة')">🕒</div>
-            <a href="https://t.me/Yssine111" class="nav-icon" style="text-decoration:none;">💬</a>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="status-bar">
+        <span>HUSSEIN_CORE_V16</span>
+        <span id="top-clock">00:00:00</span>
+        <span>LATENCY: 12ms</span>
+    </div>
+
+    <div class="side-nav">
+        <div class="nav-icon" onclick="openPanel('p-tools')">🛠️</div>
+        <div class="nav-icon" onclick="openPanel('p-clock')">🕒</div>
+        <a href="https://t.me/Yssine111" class="nav-icon" style="text-decoration:none;">💬</a>
+    </div>
+
+    <div id="p-tools" class="side-panel">
+        <span class="close-btn" onclick="closeAll()">X إغلاق</span>
+        <h3 style="margin-top:40px;">الأدوات السيبرانية</h3>
+        
+        <div class="tool-card">
+            <p>ماسح المنافذ:</p>
+            <button class="btn" onclick="runScanner()">ابدأ الفحص</button>
+            <div id="scan-res" style="font-size:0.7rem; margin-top:5px; text-align:left; direction:ltr;">Ready...</div>
         </div>
 
-        <div class="data-window">
-            <div style="font-size: 11px; border-bottom: 1px solid var(--red); margin-bottom: 8px; color: var(--red);">TARGET_INFO_SYSTEM</div>
-            <div style="font-size: 12px; color:white;">STATUS: INFECTED_SYSTEM</div>
-            <div style="font-size: 12px; color:white;">USER: ADMIN_ACCESS</div>
-            <div style="font-size: 12px; color:white;">LOC: Iraq/Anbar</div>
-            <div class="critical-alert">☣️ BIOHAZARD PROTOCOL ☣️</div>
-            <a href="https://t.me/Yssine111" class="btn-telegram">تواصل للطلب</a>
-        </div>
-
-        <div style="margin-bottom: 30px;">
-            <div class="waves-container" id="waves"></div>
-            <p style="text-align: center; font-size: 11px; letter-spacing: 3px; color: var(--green); text-shadow: 0 0 5px var(--green);">ANALYZING NETWORK TRAFFIC v3.0</p>
+        <div class="tool-card">
+            <p>محول ثنائي:</p>
+            <input type="text" oninput="document.getElementById('b-res').innerText = this.value.split('').map(c => c.charCodeAt(0).toString(2)).join(' ')">
+            <div id="b-res" style="font-size:0.6rem; color:cyan; margin-top:5px; word-break:break-all;"></div>
         </div>
     </div>
 
+    <div id="p-clock" class="side-panel">
+        <span class="close-btn" onclick="closeAll()">X إغلاق</span>
+        <h3 style="margin-top:40px;">التوقيت المحلي</h3>
+        <div id="big-clock" style="font-size:2rem; text-align:center; border:1px solid var(--primary-green); padding:20px;">00:00:00</div>
+    </div>
+
+    <div style="text-align:center; padding:20px;">
+        <div class="glitch-title">بوابة حسين التقنية</div>
+        <div style="font-size:4rem;">⌨️</div>
+        <div class="terminal-box" id="term"></div>
+        <a href="https://t.me/Yssine111" class="btn" style="text-decoration:none; display:inline-block; width:auto; padding:10px 30px;">تليجرام</a>
+    </div>
+
     <script>
-        // إنشاء أعمدة الموجات برمجياً
-        const container = document.getElementById('waves');
-        for (let i = 0; i < 40; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'bar';
-            bar.style.animationDelay = `${Math.random() * 0.6}s`;
-            container.appendChild(bar);
+        function openPanel(id) { closeAll(); document.getElementById(id).classList.add('active'); }
+        function closeAll() { document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('active')); }
+
+        // محاكاة الفحص
+        function runScanner() {
+            let out = document.getElementById('scan-res');
+            out.innerHTML = "Scanning...";
+            let p = [22, 80, 443, 8080]; let i = 0;
+            let int = setInterval(() => {
+                if(i < p.length) { out.innerHTML += `<br>> Port ${p[i]}: OPEN`; i++; }
+                else { out.innerHTML += "<br>> Complete."; clearInterval(int); }
+            }, 600);
         }
+
+        // الساعة
+        setInterval(() => {
+            let d = new Date();
+            let t = d.toLocaleTimeString('en-GB');
+            document.getElementById('top-clock').innerText = t;
+            if(document.getElementById('big-clock')) document.getElementById('big-clock').innerText = t;
+        }, 1000);
+
+        // التيرمينال
+        let lines = ["> System Rebooted...", "> Classic Interface Loaded.", "> Matrix Active.", "> Welcome Back Hussein."], l = 0;
+        function type() {
+            if(l < lines.length) { document.getElementById('term').innerHTML += lines[l] + "<br>"; l++; setTimeout(type, 800); }
+        }
+        type();
+
+        // الماتريكس (خلفية)
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const drops = Array(Math.floor(canvas.width/16)).fill(1);
+        function draw() {
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = "16px monospace";
+            drops.forEach((y, i) => {
+                ctx.fillText(Math.floor(Math.random()*2), i*16, y*16);
+                if(y*16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 33);
     </script>
 </body>
 </html>
