@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حسين للمعلوماتية | آراء العملاء والخدمات</title>
+    <title>مركز حسين التقني | Hussein Tech v3.0</title>
     
     <style>
         :root {
             --primary-green: #00ff41;
+            --accent-blue: #00d2ff;
             --dark-bg: #050505;
-            --card-bg: rgba(20, 20, 20, 0.9);
+            --card-bg: rgba(20, 20, 20, 0.95);
         }
 
         body {
@@ -20,11 +21,10 @@
             overflow-x: hidden;
         }
 
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
 
-        /* تحسين شريط الحالة للهاتف */
         .status-bar {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             border-bottom: 1px solid var(--primary-green);
             padding: 8px 15px;
             display: flex;
@@ -33,65 +33,57 @@
             font-size: 0.7rem;
             color: var(--primary-green);
             position: sticky; top: 0; z-index: 100;
-            backdrop-filter: blur(10px);
-            direction: ltr; 
+            direction: ltr;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; text-align: center; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; text-align: center; }
 
-        .section-title {
+        /* تأثير النبض للعناوين */
+        .neon-text {
             color: var(--primary-green);
-            margin: 40px 0 20px;
             text-shadow: 0 0 10px var(--primary-green);
-            font-size: 1.8rem;
+            animation: pulse 2s infinite;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+        @keyframes pulse {
+            0% { opacity: 1; text-shadow: 0 0 10px var(--primary-green); }
+            50% { opacity: 0.7; text-shadow: 0 0 20px var(--primary-green), 0 0 30px var(--primary-green); }
+            100% { opacity: 1; text-shadow: 0 0 10px var(--primary-green); }
         }
+
+        .section-title { margin: 50px 0 25px; font-size: 1.8rem; border-bottom: 1px solid #333; display: inline-block; padding-bottom: 10px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 40px; }
 
         .card {
             background: var(--card-bg);
             border: 1px solid #222;
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
-            transition: 0.3s;
+            transition: 0.4s;
         }
 
-        .card:hover {
-            border-color: var(--primary-green);
-            transform: translateY(-5px);
-        }
+        .card:hover { border-color: var(--primary-green); transform: translateY(-8px); box-shadow: 0 0 20px rgba(0,255,65,0.2); }
 
-        /* تنسيق آراء العملاء */
-        .review-card {
-            text-align: right;
-            border-right: 3px solid var(--primary-green);
-        }
+        /* أشرطة المهارات */
+        .skill-container { text-align: right; margin-bottom: 15px; }
+        .skill-bar { background: #111; border-radius: 10px; height: 10px; width: 100%; position: relative; overflow: hidden; }
+        .skill-progress { background: var(--primary-green); height: 100%; border-radius: 10px; box-shadow: 0 0 10px var(--primary-green); }
 
-        .stars { color: #ffca08; margin-bottom: 10px; font-size: 1.2rem; }
-        .client-name { color: var(--primary-green); font-weight: bold; display: block; margin-top: 10px; }
+        /* الأسئلة الشائعة */
+        .faq-item { background: #111; margin-bottom: 10px; padding: 15px; border-radius: 10px; text-align: right; border: 1px solid #222; }
+        .faq-item h4 { color: var(--accent-blue); margin-top: 0; }
 
-        .price { font-size: 1.5rem; color: var(--primary-green); margin: 15px 0; font-weight: bold; }
-        
         .btn-order {
-            text-decoration: none;
-            background: var(--primary-green);
-            color: black;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            display: block;
+            text-decoration: none; background: var(--primary-green); color: black;
+            padding: 12px; border-radius: 8px; font-weight: bold; display: block; margin-top: 15px;
         }
 
         .floating-chat {
             position: fixed; bottom: 20px; right: 20px;
             background: #24A1DE; color: white;
-            padding: 12px 20px; border-radius: 50px;
-            text-decoration: none; font-weight: bold; z-index: 1000;
+            padding: 12px 25px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -100,51 +92,58 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div class="status-bar">
-        <span>STATUS: SECURE</span>
+        <span>SECURITY: LEVEL 5</span>
         <span id="clock">00:00:00</span>
-        <span>LIVE: <span id="v-count">1,581</span></span>
+        <span>VISITORS: <span id="v-count">1,582</span></span>
     </div>
 
     <div class="container">
-        <h1 style="color: var(--primary-green); text-shadow: 0 0 15px var(--primary-green);">HUSSEIN TECH 🛡️</h1>
+        <h1 class="neon-text">HUSSEIN TECH HUB 🛡️</h1>
+
+        <h2 class="section-title">📊 القدرات البرمجية</h2>
+        <div class="card" style="text-align: right;">
+            <div class="skill-container">
+                <span>برمجة Python</span>
+                <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-container">
+                <span>اختبار الاختراق (Pentesting)</span>
+                <div class="skill-bar"><div class="skill-progress" style="width: 75%;"></div></div>
+            </div>
+            <div class="skill-container">
+                <span>أنظمة Linux & Termux</span>
+                <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+            </div>
+        </div>
 
         <h2 class="section-title">🛡️ الخدمات المتاحة</h2>
         <div class="grid">
             <div class="card">
-                <h3>فحص الثغرات</h3>
-                <p>تأمين المواقع ضد هجمات SQL و XSS.</p>
-                <div class="price">25,000 د.ع</div>
-                <a href="https://t.me/Yssine111?text=طلب_فحص" class="btn-order">طلب الخدمة</a>
+                <h3>تأمين المواقع</h3>
+                <p>فحص وحماية من ثغرات SQL و XSS.</p>
+                <div style="font-weight: bold; color: var(--primary-green);">25,000 د.ع</div>
+                <a href="https://t.me/Yssine111?text=طلب_فحص" class="btn-order">اطلب الخدمة</a>
             </div>
             <div class="card">
-                <h3>برمجة Python</h3>
-                <p>صناعة أدوات أتمتة مخصصة لتيرمكس.</p>
-                <div class="price">15,000 د.ع</div>
-                <a href="https://t.me/Yssine111?text=طلب_برمجة" class="btn-order">طلب الخدمة</a>
+                <h3>أتمتة السكريبتات</h3>
+                <p>صناعة أدوات Python مخصصة لتيرمكس.</p>
+                <div style="font-weight: bold; color: var(--primary-green);">15,000 د.ع</div>
+                <a href="https://t.me/Yssine111?text=طلب_برمجة" class="btn-order">اطلب الخدمة</a>
             </div>
         </div>
 
-        <h2 class="section-title">⭐ آراء العملاء</h2>
-        <div class="grid">
-            <div class="card review-card">
-                <div class="stars">★★★★★</div>
-                <p>"تعاملت مع حسين في سكريبت بايثون، العمل كان سريعاً جداً والأداة تعمل بدون أخطاء."</p>
-                <span class="client-name">- مبرمج من البصرة</span>
-            </div>
-            <div class="card review-card">
-                <div class="stars">★★★★★</div>
-                <p>"قام بفحص موقعي واكتشف ثغرات لم أكن أعرفها. أنصح بالتعامل معه للأمان."</p>
-                <span class="client-name">- صاحب متجر إلكتروني</span>
-            </div>
-            <div class="card review-card">
-                <div class="stars">★★★★☆</div>
-                <p>"شخص محترف جداً في التعامل ومتمكن من أدوات تيرمكس ولينكس."</p>
-                <span class="client-name">- طالب تقني</span>
-            </div>
+        <h2 class="section-title">❓ أسئلة شائعة</h2>
+        <div class="faq-item">
+            <h4>كيف يتم الدفع؟</h4>
+            <p>ندعم طرق الدفع المحلية مثل زين كاش وآسيا حوالة لتسهيل التعامل داخل العراق.</p>
+        </div>
+        <div class="faq-item">
+            <h4>هل الأدوات تعمل على الموبايل؟</h4>
+            <p>نعم، جميع سكريبتات البايثون التي أصممها مهيأة للعمل على تطبيق Termux بكفاءة عالية.</p>
         </div>
     </div>
 
-    <a href="https://t.me/Yssine111" class="floating-chat">💬 راسلني الآن</a>
+    <a href="https://t.me/Yssine111" class="floating-chat">💬 ابدأ المحادثة</a>
 
     <script>
         function updateClock() {
@@ -153,11 +152,11 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        let visitors = 1581;
+        let visitors = 1582;
         setInterval(() => {
             visitors += Math.floor(Math.random() * 2);
             document.getElementById('v-count').textContent = visitors.toLocaleString();
-        }, 6000);
+        }, 7000);
 
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
