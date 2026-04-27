@@ -1,53 +1,65 @@
-html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUSSEIN ALL-IN-ONE | v26</title> <meta name="google-site-verification" content="wwUYnJejTXe-jil_FdUf2uy8mpQCvvWRxDscDL_y_V8" />
+    <title>HUSSEIN MATRIX | v30</title>
     <style>
-        :root { --matrix: #00ff41; --hud-blue: #00d2ff; --bg-dark: rgba(10, 10, 10, 0.96); }
+        :root { --matrix: #00ff41; --bg-dark: rgba(0, 0, 0, 0.9); }
+        
         body {
             margin: 0; background: #000; color: #fff;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: url('https://i.ibb.co/XzC83yY/hacker-mask-poster.jpg') center/cover no-repeat fixed;
+            overflow-x: hidden;
         }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 0; }
+
+        /* خلفية مطر الأرقام */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* تجعلها خلف المحتوى */
+        }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 0; pointer-events: none; }
+        
         .content { position: relative; z-index: 1; padding: 15px; max-width: 480px; margin: 0 auto; margin-bottom: 100px; }
 
-        /* البطاقات الاحترافية */
-        .card { background: var(--bg-dark); border: 1px solid #333; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
-        h3 { color: var(--matrix); margin-top: 0; text-shadow: 0 0 8px var(--matrix); font-size: 1.1rem; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        
-        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: var(--matrix); padding: 12px; border-radius: 10px; margin-top: 10px; box-sizing: border-box; font-family: monospace; }
-        .btn { background: var(--matrix); color: #000; border: none; padding: 14px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        .btn:active { transform: scale(0.98); }
+        .card { 
+            background: rgba(10, 10, 10, 0.85); 
+            border: 1px solid #003b00; 
+            border-radius: 20px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            backdrop-filter: blur(5px); /* تأثير الزجاج الضبابي */
+        }
 
-        /* شريط الإحصائيات */
-        .top-stats { display: flex; justify-content: space-around; align-items: center; background: rgba(0,0,0,0.9); border: 1px solid var(--matrix); border-radius: 15px; padding: 12px; margin-bottom: 20px; font-family: monospace; color: var(--matrix); text-align: center; }
+        h3 { color: var(--matrix); margin-top: 0; text-shadow: 0 0 8px var(--matrix); font-size: 1.1rem; border-bottom: 1px solid #003b00; padding-bottom: 10px; }
+        textarea, input { width: 100%; background: #000; border: 1px solid #003b00; color: var(--matrix); padding: 12px; border-radius: 10px; margin-top: 10px; box-sizing: border-box; font-family: monospace; }
+        .btn { background: var(--matrix); color: #000; border: none; padding: 14px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
 
-        /* أداة الترجمة */
-        #google_translate_element { margin-top: 10px; }
-        .goog-te-gadget-simple { background: #000 !important; border: 1px solid var(--matrix) !important; border-radius: 8px !important; padding: 5px !important; }
+        .top-stats { display: flex; justify-content: space-around; align-items: center; background: rgba(0,0,0,0.8); border: 1px solid var(--matrix); border-radius: 15px; padding: 12px; margin-bottom: 20px; font-family: monospace; color: var(--matrix); }
 
-        /* نظام الدردشة الآلية */
+        /* نظام الدردشة */
         .chat-container { position: fixed; bottom: 20px; right: 20px; left: 20px; z-index: 100; max-width: 440px; margin: 0 auto; }
-        .chat-box { background: #000; border: 1px solid var(--matrix); border-radius: 15px; overflow: hidden; display: none; flex-direction: column; height: 300px; box-shadow: 0 0 20px var(--matrix); }
+        .chat-box { background: #000; border: 1px solid var(--matrix); border-radius: 15px; overflow: hidden; display: none; flex-direction: column; height: 300px; }
         .chat-header { background: var(--matrix); color: #000; padding: 10px; font-weight: bold; text-align: center; cursor: pointer; }
         .messages { flex: 1; padding: 10px; overflow-y: auto; font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px; }
-        .msg.bot { background: #111; color: var(--matrix); align-self: flex-start; border: 1px solid #222; padding: 8px 12px; border-radius: 10px; max-width: 85%; }
+        .msg.bot { background: #001a00; color: var(--matrix); align-self: flex-start; border: 1px solid #003b00; padding: 8px 12px; border-radius: 10px; }
         .msg.user { background: var(--matrix); color: #000; align-self: flex-end; padding: 8px 12px; border-radius: 10px; }
-        .chat-input-area { display: flex; padding: 10px; gap: 5px; background: #050505; }
+        .chat-input-area { display: flex; padding: 10px; gap: 5px; background: #000; }
         .chat-toggle { background: var(--matrix); color: #000; border-radius: 50px; padding: 12px 25px; cursor: pointer; font-weight: bold; display: inline-block; box-shadow: 0 0 15px var(--matrix); }
     </style>
 </head>
 <body>
+    <canvas id="matrix-canvas"></canvas>
     <div class="overlay"></div>
 
     <div class="content">
         <div class="top-stats">
             <div>CLOCK:<br><span id="clock">00:00:00</span></div>
-            <div style="font-size: 1.5rem;">🛡️</div>
-            <div>STATUS:<br><b style="color:var(--matrix)">SECURE</b></div>
+            <div style="font-size: 1.5rem;">🎭</div>
+            <div>SYSTEM:<br><b style="color:var(--matrix)">ACTIVE</b></div>
         </div>
 
         <div class="card" style="text-align: center;">
@@ -56,28 +68,28 @@ html>
         </div>
 
         <div class="card">
-            <h3>أداة التشفير الفوري 🔐</h3>
-            <textarea id="crypto-in" rows="2" placeholder="أدخل النص هنا لتشفيره أو فكه..."></textarea>
+            <h3>أداة التشفير 🔐</h3>
+            <textarea id="crypto-in" rows="2" placeholder="أدخل النص هنا..."></textarea>
             <div style="display:flex; gap:10px;">
                 <button class="btn" onclick="runCrypto('en')">تشفير</button>
-                <button class="btn" style="background:#222; color:#fff; border:1px solid var(--matrix);" onclick="runCrypto('de')">فك التشفير</button>
+                <button class="btn" style="background:#000; color:var(--matrix); border:1px solid var(--matrix);" onclick="runCrypto('de')">فك</button>
             </div>
-            <div id="crypto-out" style="margin-top:10px; font-size:0.8rem; color:var(--hud-blue); word-break:break-all; font-family:monospace;"></div>
+            <div id="crypto-out" style="margin-top:10px; font-size:0.85rem; color:var(--matrix); word-break:break-all; font-family:monospace;"></div>
         </div>
 
         <div class="card" style="text-align: center;">
-            <h3>خدمة فحص الثغرات</h3>
-            <div style="color:var(--matrix); font-size:1.8rem; font-weight:bold; margin: 10px 0;">25,000 د.ع</div>
-            <button class="btn" onclick="location.href='https://t.me/Yssine111'">اطلب الخدمة عبر تليجرام</button>
+            <h3>فحص الثغرات (VIP)</h3>
+            <div style="color:var(--matrix); font-size:1.8rem; font-weight:bold;">25,000 د.ع</div>
+            <button class="btn" onclick="location.href='https://t.me/Yssine111'">تواصل تليجرام</button>
         </div>
     </div>
 
     <div class="chat-container">
-        <div class="chat-toggle" id="toggle-btn" onclick="toggleChat()">💬 مراسلة النظام</div>
+        <div class="chat-toggle" id="toggle-btn" onclick="toggleChat()">💬 مراسلة حسين</div>
         <div class="chat-box" id="chat-window">
-            <div class="chat-header" onclick="toggleChat()">المجيب الآلي (حسين)</div>
+            <div class="chat-header" onclick="toggleChat()">المجيب الآلي</div>
             <div class="messages" id="chat-msgs">
-                <div class="msg bot">مرحباً! أنا المجيب الآلي الخاص بحسين. تفضل بترك رسالتك.</div>
+                <div class="msg bot">نظام الرد الآلي مفعل. تفضل بترك رسالتك.</div>
             </div>
             <div class="chat-input-area">
                 <input type="text" id="user-msg" placeholder="اكتب هنا...">
@@ -86,48 +98,67 @@ html>
         </div>
     </div>
 
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'ar'}, 'google_translate_element');
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%'\"#&_(),.;:?!\\|{}<>[]^~";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
         }
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#00ff41";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
+    </script>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'ar'}, 'google_translate_element'); }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        // ساعة النظام
         setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB'); }, 1000);
-
-        // وظائف التشفير
         function runCrypto(mode) {
             const val = document.getElementById('crypto-in').value;
             const out = document.getElementById('crypto-out');
-            try {
-                out.innerText = (mode === 'en') ? btoa(unescape(encodeURIComponent(val))) : decodeURIComponent(escape(atob(val)));
-            } catch(e) { out.innerText = "خطأ في المعالجة!"; }
+            try { out.innerText = (mode === 'en') ? btoa(unescape(encodeURIComponent(val))) : decodeURIComponent(escape(atob(val))); } catch(e) { out.innerText = "خطأ!"; }
         }
-
-        // وظائف الدردشة الآلية
         function toggleChat() {
             const win = document.getElementById('chat-window');
             const btn = document.getElementById('toggle-btn');
-            if(win.style.display === "none" || win.style.display === "") {
-                win.style.display = "flex"; btn.style.display = "none";
-            } else {
-                win.style.display = "none"; btn.style.display = "block";
-            }
+            win.style.display = (win.style.display === "none" || win.style.display === "") ? "flex" : "none";
+            btn.style.display = (win.style.display === "flex") ? "none" : "block";
         }
-
         function sendMessage() {
             const input = document.getElementById('user-msg');
             const msgs = document.getElementById('chat-msgs');
             if(!input.value.trim()) return;
             msgs.innerHTML += `<div class="msg user">${input.value}</div>`;
-            input.value = "";
-            msgs.scrollTop = msgs.scrollHeight;
-            setTimeout(() => {
-                msgs.innerHTML += `<div class="msg bot">أعتذر، حسين مشغول حالياً. سأقوم بإرسال رسالتك له وسيجيبك لاحقاً. 🛡️</div>`;
-                msgs.scrollTop = msgs.scrollHeight;
-            }, 1000);
+            input.value = ""; msgs.scrollTop = msgs.scrollHeight;
+            setTimeout(() => { msgs.innerHTML += `<div class="msg bot">حسين مشغول حالياً وسيجيبك لاحقاً. 🛡️</div>`; msgs.scrollTop = msgs.scrollHeight; }, 1000);
         }
     </script>
 </body>
