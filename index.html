@@ -1,16 +1,16 @@
-tml>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة حسين التقنية | HUSSEIN OS v4.0</title>
+    <title>بوابة حسين التقنية | HUSSEIN OS PRO</title>
     
     <style>
         :root {
             --primary-green: #00ff41;
             --accent-blue: #00d2ff;
-            --dark-bg: #030303;
-            --card-bg: rgba(15, 15, 15, 0.98);
+            --dark-bg: #010101;
+            --panel-bg: rgba(5, 5, 5, 0.98);
         }
 
         body {
@@ -18,172 +18,167 @@ tml>
             font-family: 'Courier New', Courier, monospace; margin: 0; overflow-x: hidden;
         }
 
-        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.25; }
+        #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
 
+        /* شريط الحالة العلوي المنسق للهاتف */
         .status-bar {
-            background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--primary-green);
-            padding: 10px 15px; display: flex; justify-content: space-between;
-            font-size: 0.75rem; color: var(--primary-green);
-            position: sticky; top: 0; z-index: 100; direction: ltr;
+            background: #000; border-bottom: 1px solid var(--primary-green);
+            padding: 8px 15px; display: flex; justify-content: space-between;
+            font-size: 0.7rem; color: var(--primary-green); position: sticky; top: 0; z-index: 1000;
+            direction: ltr;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; text-align: center; }
-
-        /* لوحة معلومات الزائر */
-        .info-panel {
-            background: rgba(0, 255, 65, 0.05); border: 1px solid var(--primary-green);
-            border-radius: 10px; padding: 15px; margin-bottom: 30px; text-align: right;
-            font-size: 0.9rem; color: var(--primary-green);
+        /* القائمة الجانبية العائمة */
+        .side-nav {
+            position: fixed; left: 10px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px; z-index: 1001;
         }
 
-        .section-title { margin: 40px 0 20px; color: var(--primary-green); text-shadow: 0 0 10px var(--primary-green); }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-
-        .tool-card {
-            background: var(--card-bg); border: 1px solid #333; padding: 25px;
-            border-radius: 15px; transition: 0.3s; position: relative;
+        .nav-icon {
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--primary-green);
+            color: var(--primary-green); width: 45px; height: 45px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: 0.3s; font-size: 1.2rem;
         }
 
-        .tool-card:hover { border-color: var(--primary-green); box-shadow: 0 0 20px rgba(0, 255, 65, 0.2); }
+        .nav-icon:hover { background: var(--primary-green); color: black; box-shadow: 0 0 15px var(--primary-green); }
+
+        /* النوافذ الجانبية المتحركة */
+        .side-panel {
+            position: fixed; top: 45px; bottom: 0; left: -100%; width: 85%; max-width: 350px;
+            background: var(--panel-bg); border-right: 2px solid var(--primary-green);
+            z-index: 1002; transition: 0.5s; padding: 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.9);
+        }
+
+        .side-panel.active { left: 0; }
+
+        .close-btn { color: #ff4141; float: left; cursor: pointer; font-weight: bold; border: 1px solid #ff4141; padding: 2px 8px; border-radius: 5px; }
+
+        /* المحتوى الرئيسي */
+        .container { padding: 20px; text-align: center; }
+
+        .glitch-title {
+            font-size: 2.2rem; color: white; text-shadow: 0 0 15px var(--primary-green);
+            margin: 20px 0; font-weight: bold;
+        }
+
+        .terminal-box {
+            background: #000; border: 1px solid #222; border-radius: 10px;
+            padding: 15px; margin: 20px auto; height: 100px; text-align: left;
+            direction: ltr; color: var(--primary-green); font-size: 0.8rem; overflow: hidden;
+        }
+
+        .card {
+            background: rgba(20,20,20,0.8); border: 1px solid #333; padding: 15px;
+            border-radius: 10px; margin-top: 20px; border-right: 3px solid var(--primary-green);
+        }
 
         textarea, input {
-            width: 100%; background: #000; border: 1px solid #444; color: var(--primary-green);
-            padding: 12px; border-radius: 5px; font-family: monospace; margin: 10px 0; box-sizing: border-box;
+            width: 100%; background: #000; border: 1px solid var(--primary-green);
+            color: var(--primary-green); padding: 10px; margin: 10px 0; border-radius: 5px;
         }
 
-        .btn-action {
-            background: var(--primary-green); color: black; border: none;
-            padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%;
+        .btn-run {
+            width: 100%; background: var(--primary-green); color: black; border: none;
+            padding: 10px; font-weight: bold; border-radius: 5px; cursor: pointer;
         }
-
-        /* نظام الإشعارات */
-        #notification {
-            position: fixed; top: 70px; left: 20px; background: var(--primary-green);
-            color: black; padding: 15px; border-radius: 5px; font-weight: bold;
-            display: none; z-index: 1000; animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-
-        .loading-bar { height: 3px; background: var(--primary-green); width: 0%; transition: 0.5s; margin-top: 5px; }
-
-        .price { font-size: 1.3rem; color: var(--primary-green); margin: 10px 0; }
     </style>
 </head>
-<body onload="initSite()">
+<body>
 
-    <div id="notification">⚠️ تم تفعيل بروتوكول الحماية.. مرحباً حسين!</div>
     <canvas id="matrix-canvas"></canvas>
 
     <div class="status-bar">
-        <span>OS: HUSSEIN-V4</span>
+        <span>OS: HUSSEIN_V7</span>
         <span id="clock">00:00:00</span>
-        <span>CPU: 12% | RAM: 34%</span>
+        <span>VISITORS: <span id="v-count">1,581</span></span>
+    </div>
+
+    <div class="side-nav">
+        <div class="nav-icon" onclick="openPanel('p-enc')" title="تشفير">🔒</div>
+        <div class="nav-icon" onclick="openPanel('p-info')" title="بيانات">📊</div>
+        <div class="nav-icon" onclick="window.location.href='https://t.me/Yssine111'" title="تواصل">💬</div>
+    </div>
+
+    <div id="p-enc" class="side-panel">
+        <span class="close-btn" onclick="closeAll()">إغلاق X</span>
+        <h3 style="color: var(--primary-green); margin-top: 40px;">🔐 وحدة التشفير</h3>
+        <textarea id="inpText" rows="5" placeholder="أدخل النص لتشفيره..."></textarea>
+        <button class="btn-run" onclick="doEnc()">تشفير الآن</button>
+        <div id="resText" style="margin-top:20px; color: var(--accent-blue); word-break: break-all; font-size: 0.8rem;"></div>
+    </div>
+
+    <div id="p-info" class="side-panel">
+        <span class="close-btn" onclick="closeAll()">إغلاق X</span>
+        <h3 style="color: var(--primary-green); margin-top: 40px;">📊 حالة النظام</h3>
+        <div id="sys-data" style="text-align: right; font-size: 0.8rem; line-height: 2;"></div>
     </div>
 
     <div class="container">
-        <h1 style="color: var(--primary-green); letter-spacing: 5px;">[ HUSSEIN HUB ]</h1>
+        <div class="glitch-title">HUSSEIN TECH HUB</div>
+        <img src="https://telegra.ph/file/69c1181f9b3b246a4e320.jpg" style="width: 100px; border-radius: 50%; border: 2px solid var(--primary-green);">
+        
+        <div class="terminal-box" id="term"></div>
 
-        <div class="info-panel" id="visitor-info">
-            > جاري سحب بيانات النظام...<br>
-            > حالة الاتصال: آمنة<br>
-            > الموقع: العراق / الأنبار
-        </div>
-
-        <div class="grid">
-            <div class="tool-card">
-                <h3>🔐 مترجم Leet Speak</h3>
-                <p>حول اسمك إلى لغة الهكرز المشفرة.</p>
-                <input type="text" id="leetInput" placeholder="اكتب اسمك هنا..." oninput="convertLeet()">
-                <div id="leetResult" style="color: var(--accent-blue); font-weight: bold; word-break: break-all;">النتيجة ستظهر هنا...</div>
-            </div>
-
-            <div class="tool-card">
-                <h3>🔍 فاحص النظام</h3>
-                <p>اضغط لمعرفة بيانات جهازك السرية.</p>
-                <button class="btn-action" onclick="checkSystem()">بدء الفحص</button>
-                <div id="systemResult" style="margin-top:10px; font-size: 0.8rem; color: var(--accent-blue);"></div>
-                <div class="loading-bar" id="loadBar"></div>
-            </div>
-
-            <div class="tool-card">
-                <h3>🛠️ برمجة Python</h3>
-                <p>تصميم سكريبتات اختراق أخلاقي وأتمتة.</p>
-                <div class="price">15,000 د.ع</div>
-                <a href="https://t.me/Yssine111" class="btn-action" style="text-decoration: none; display: block;">اطلب الخدمة</a>
-            </div>
-        </div>
-
-        <h2 class="section-title">// بروتوكولات الحماية //</h2>
-        <div class="grid" style="grid-template-columns: 1fr;">
-            <div class="tool-card" style="text-align: right;">
-                <p>> تم تشفير جميع المحادثات بين العميل وحسين بنظام End-to-End.</p>
-                <p>> الدفع متوفر عبر: ZainCash | AsiaHawala</p>
-            </div>
+        <div class="card">
+            <h4 style="margin:0; color: var(--primary-green);">خدمات مخصصة</h4>
+            <p style="font-size: 0.9rem;">برمجة سكريبتات Python | فحص أمني | دعم تيرمكس</p>
+            <a href="https://t.me/Yssine111" style="color: white; text-decoration: none; font-weight: bold;">[ اطلب خدمتك الآن ]</a>
         </div>
     </div>
 
     <script>
-        function initSite() {
-            // إظهار إشعار عند الدخول
-            const notif = document.getElementById('notification');
-            notif.style.display = 'block';
-            setTimeout(() => { notif.style.display = 'none'; }, 4000);
-            
-            // تحديث معلومات الزائر
-            document.getElementById('visitor-info').innerHTML = `
-                > عنوان الـ IP: 192.168.1.${Math.floor(Math.random()*255)} (إفتراضي)<br>
-                > المتصفح: ${navigator.userAgent.split(' ')[0]}<br>
-                > النظام الأساسي: Linux/Android
-            `;
+        // فتح وإغلاق النوافذ
+        function openPanel(id) {
+            closeAll();
+            document.getElementById(id).classList.add('active');
+        }
+        function closeAll() {
+            document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('active'));
         }
 
-        // تحويل لغة الهكرز
-        function convertLeet() {
-            const map = {'a':'4','e':'3','i':'1','o':'0','s':'5','t':'7','b':'8'};
-            let str = document.getElementById('leetInput').value.toLowerCase();
-            let result = str.replace(/[aeios tb]/g, m => map[m] || m);
-            document.getElementById('leetResult').innerText = result.toUpperCase();
+        // أداة التشفير
+        function doEnc() {
+            const val = document.getElementById('inpText').value;
+            document.getElementById('resText').innerText = "النتيجة المشفرة: " + btoa(val);
         }
 
-        // محاكاة فحص النظام
-        function checkSystem() {
-            const bar = document.getElementById('loadBar');
-            bar.style.width = '100%';
-            setTimeout(() => {
-                document.getElementById('systemResult').innerHTML = `
-                    تم اكتشاف النظام: ${navigator.platform}<br>
-                    دقة الشاشة: ${window.screen.width}x${window.screen.height}<br>
-                    حالة البطارية: متصلة
-                `;
-                bar.style.width = '0%';
-            }, 1500);
+        // محاكاة التيرمكس
+        const lines = ["> Initializing OS...", "> Loading Matrix core...", "> Security: Active.", "> Welcome, Hussein."];
+        let l = 0;
+        function type() {
+            if(l < lines.length) {
+                document.getElementById('term').innerHTML += lines[l] + "<br>";
+                l++; setTimeout(type, 1500);
+            }
         }
+        type();
+
+        // بيانات النظام
+        document.getElementById('sys-data').innerHTML = `
+            - الموقع: العراق / الأنبار<br>
+            - المعالج: Octa-core Virtual<br>
+            - الاتصال: SSL Encrypted<br>
+            - المتصفح: ${navigator.platform}
+        `;
 
         // الماتريكس والساعة
-        function updateClock() {
-            document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-GB');
-        }
-        setInterval(updateClock, 1000);
-
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB'); }, 1000);
+        
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const letters = "010101"; const fontSize = 16;
-        const columns = canvas.width / fontSize; const drops = [];
-        for (let i = 0; i < columns; i++) drops[i] = 1;
+        const drops = Array(Math.floor(canvas.width/16)).fill(1);
         function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0"; ctx.font = fontSize + "px arial";
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = "16px monospace";
+            drops.forEach((y, i) => {
+                ctx.fillText(Math.floor(Math.random()*2), i*16, y*16);
+                if(y*16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
-            }
+            });
         }
         setInterval(draw, 33);
     </script>
 </body>
-</html
+</html>
