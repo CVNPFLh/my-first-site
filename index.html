@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة حسين التقنية | HUSSEIN OS PRO</title>
-    
+    <title>بوابة حسين التقنية | HUSSEIN OS v7.0</title>
     <style>
         :root {
             --primary-green: #00ff41;
@@ -20,7 +19,7 @@
 
         #matrix-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
 
-        /* شريط الحالة العلوي المنسق للهاتف */
+        /* شريط الحالة العلوي */
         .status-bar {
             background: #000; border-bottom: 1px solid var(--primary-green);
             padding: 8px 15px; display: flex; justify-content: space-between;
@@ -28,7 +27,7 @@
             direction: ltr;
         }
 
-        /* القائمة الجانبية العائمة */
+        /* القائمة الجانبية (الأيقونات) */
         .side-nav {
             position: fixed; left: 10px; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 15px; z-index: 1001;
@@ -38,16 +37,17 @@
             background: rgba(0, 0, 0, 0.8); border: 1px solid var(--primary-green);
             color: var(--primary-green); width: 45px; height: 45px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: 0.3s; font-size: 1.2rem;
+            transition: 0.3s; font-size: 1.2rem; box-shadow: 0 0 10px rgba(0,255,65,0.2);
         }
 
         .nav-icon:hover { background: var(--primary-green); color: black; box-shadow: 0 0 15px var(--primary-green); }
 
-        /* النوافذ الجانبية المتحركة */
+        /* النوافذ الجانبية المنزلقة */
         .side-panel {
             position: fixed; top: 45px; bottom: 0; left: -100%; width: 85%; max-width: 350px;
             background: var(--panel-bg); border-right: 2px solid var(--primary-green);
-            z-index: 1002; transition: 0.5s; padding: 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.9);
+            z-index: 1002; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px; 
+            box-shadow: 10px 0 30px rgba(0,0,0,0.9);
         }
 
         .side-panel.active { left: 0; }
@@ -59,29 +59,34 @@
 
         .glitch-title {
             font-size: 2.2rem; color: white; text-shadow: 0 0 15px var(--primary-green);
-            margin: 20px 0; font-weight: bold;
+            margin: 20px 0; font-weight: bold; letter-spacing: 2px;
         }
 
         .terminal-box {
             background: #000; border: 1px solid #222; border-radius: 10px;
-            padding: 15px; margin: 20px auto; height: 100px; text-align: left;
+            padding: 15px; margin: 20px auto; height: 120px; text-align: left;
             direction: ltr; color: var(--primary-green); font-size: 0.8rem; overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,255,65,0.1);
         }
 
         .card {
             background: rgba(20,20,20,0.8); border: 1px solid #333; padding: 15px;
             border-radius: 10px; margin-top: 20px; border-right: 3px solid var(--primary-green);
+            text-align: right;
         }
 
         textarea, input {
             width: 100%; background: #000; border: 1px solid var(--primary-green);
             color: var(--primary-green); padding: 10px; margin: 10px 0; border-radius: 5px;
+            font-family: monospace; box-sizing: border-box;
         }
 
         .btn-run {
             width: 100%; background: var(--primary-green); color: black; border: none;
             padding: 10px; font-weight: bold; border-radius: 5px; cursor: pointer;
         }
+
+        .info-text { text-align: right; font-size: 0.85rem; line-height: 1.8; color: var(--accent-blue); }
     </style>
 </head>
 <body>
@@ -89,46 +94,55 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div class="status-bar">
-        <span>OS: HUSSEIN_V7</span>
+        <span>MODE: PRO_ENCRYPTED</span>
         <span id="clock">00:00:00</span>
         <span>VISITORS: <span id="v-count">1,581</span></span>
     </div>
 
     <div class="side-nav">
-        <div class="nav-icon" onclick="openPanel('p-enc')" title="تشفير">🔒</div>
-        <div class="nav-icon" onclick="openPanel('p-info')" title="بيانات">📊</div>
-        <div class="nav-icon" onclick="window.location.href='https://t.me/Yssine111'" title="تواصل">💬</div>
+        <div class="nav-icon" onclick="openPanel('p-enc')" title="أداة التشفير">🔐</div>
+        <div class="nav-icon" onclick="openPanel('p-info')" title="بيانات النظام">📊</div>
+        <div class="nav-icon" onclick="window.location.href='https://t.me/Yssine111'" title="تواصل تليجرام">💬</div>
     </div>
 
     <div id="p-enc" class="side-panel">
         <span class="close-btn" onclick="closeAll()">إغلاق X</span>
-        <h3 style="color: var(--primary-green); margin-top: 40px;">🔐 وحدة التشفير</h3>
-        <textarea id="inpText" rows="5" placeholder="أدخل النص لتشفيره..."></textarea>
-        <button class="btn-run" onclick="doEnc()">تشفير الآن</button>
-        <div id="resText" style="margin-top:20px; color: var(--accent-blue); word-break: break-all; font-size: 0.8rem;"></div>
+        <h3 style="color: var(--primary-green); margin-top: 40px; text-align: right;">🔐 وحدة التشفير</h3>
+        <p style="font-size: 0.8rem; text-align: right;">تشفير Base64 آمن:</p>
+        <textarea id="inpText" rows="4" placeholder="أدخل النص هنا..."></textarea>
+        <button class="btn-run" onclick="doEnc()">بدء التشفير</button>
+        <div id="resText" style="margin-top:20px; color: var(--primary-green); word-break: break-all; font-family: monospace; font-size: 0.8rem; background: #000; padding: 10px; border-radius: 5px;"></div>
     </div>
 
     <div id="p-info" class="side-panel">
         <span class="close-btn" onclick="closeAll()">إغلاق X</span>
-        <h3 style="color: var(--primary-green); margin-top: 40px;">📊 حالة النظام</h3>
-        <div id="sys-data" style="text-align: right; font-size: 0.8rem; line-height: 2;"></div>
+        <h3 style="color: var(--primary-green); margin-top: 40px; text-align: right;">📊 تحليل النظام</h3>
+        <div id="sys-data" class="info-text">
+            > جاري سحب البيانات...
+        </div>
+        <div class="card" style="margin-top: 30px;">
+            <p style="font-size: 0.75rem;">تنبيه: جميع العمليات مشفرة بنظام 256-bit.</p>
+        </div>
     </div>
 
     <div class="container">
-        <div class="glitch-title">HUSSEIN TECH HUB</div>
-        <img src="https://telegra.ph/file/69c1181f9b3b246a4e320.jpg" style="width: 100px; border-radius: 50%; border: 2px solid var(--primary-green);">
+        <div class="glitch-title">HUSSEIN HUB</div>
         
+        <div style="font-size: 4rem; text-shadow: 0 0 20px var(--primary-green);">🛡️</div>
+        
+        <p style="color: var(--primary-green); margin-top: 10px;">حلول برمجية | حماية سيبرانية | بايثون</p>
+
         <div class="terminal-box" id="term"></div>
 
         <div class="card">
-            <h4 style="margin:0; color: var(--primary-green);">خدمات مخصصة</h4>
-            <p style="font-size: 0.9rem;">برمجة سكريبتات Python | فحص أمني | دعم تيرمكس</p>
-            <a href="https://t.me/Yssine111" style="color: white; text-decoration: none; font-weight: bold;">[ اطلب خدمتك الآن ]</a>
+            <h4 style="margin:0; color: var(--primary-green);">الخدمات التجارية</h4>
+            <p style="font-size: 0.85rem;">• فحص ثغرات المواقع<br>• برمجة سكريبتات Termux مخصصة<br>• تأمين حسابات وحلول برمجية</p>
+            <a href="https://t.me/Yssine111" style="color: white; text-decoration: none; font-weight: bold; background: var(--primary-green); color: black; padding: 5px 15px; border-radius: 5px; display: inline-block; margin-top: 10px;">تواصل للطلب</a>
         </div>
     </div>
 
     <script>
-        // فتح وإغلاق النوافذ
+        // نظام النوافذ الجانبية
         function openPanel(id) {
             closeAll();
             document.getElementById(id).classList.add('active');
@@ -140,29 +154,44 @@
         // أداة التشفير
         function doEnc() {
             const val = document.getElementById('inpText').value;
-            document.getElementById('resText').innerText = "النتيجة المشفرة: " + btoa(val);
+            if(val) {
+                document.getElementById('resText').innerText = "RESULT: " + btoa(unescape(encodeURIComponent(val)));
+            }
         }
 
         // محاكاة التيرمكس
-        const lines = ["> Initializing OS...", "> Loading Matrix core...", "> Security: Active.", "> Welcome, Hussein."];
+        const lines = [
+            "> Initializing OS v7.0...",
+            "> Loading encryption modules...",
+            "> Checking system integrity...",
+            "> Proxy: Connected (Iraq/Anbar)",
+            "> Welcome back, Hussein.",
+            "> Ready for commands..."
+        ];
         let l = 0;
         function type() {
+            const term = document.getElementById('term');
             if(l < lines.length) {
-                document.getElementById('term').innerHTML += lines[l] + "<br>";
-                l++; setTimeout(type, 1500);
+                term.innerHTML += lines[l] + "<br>";
+                l++;
+                setTimeout(type, 1200);
             }
         }
         type();
 
-        // بيانات النظام
-        document.getElementById('sys-data').innerHTML = `
-            - الموقع: العراق / الأنبار<br>
-            - المعالج: Octa-core Virtual<br>
-            - الاتصال: SSL Encrypted<br>
-            - المتصفح: ${navigator.platform}
-        `;
+        // بيانات الزائر الحقيقية
+        function loadSysData() {
+            document.getElementById('sys-data').innerHTML = `
+                > الموقع: العراق / الأنبار<br>
+                > النظام: ${navigator.platform}<br>
+                > المتصفح: ${navigator.userAgent.split(' ')[0]}<br>
+                > الذاكرة: Virtual 16GB<br>
+                > حالة الاتصال: Secure (SSL)
+            `;
+        }
+        loadSysData();
 
-        // الماتريكس والساعة
+        // الساعة والماتريكس
         setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB'); }, 1000);
         
         const canvas = document.getElementById('matrix-canvas');
