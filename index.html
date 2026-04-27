@@ -3,112 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الخدمات التجارية | HUSSEIN OS</title>
+    <title>خدمات وأدوات حسين التقنية</title>
     <style>
         :root {
             --matrix-green: #00ff41;
-            --card-bg: rgba(18, 18, 18, 0.95);
+            --card-bg: rgba(15, 15, 15, 0.95);
+            --accent-blue: #00d2ff;
         }
 
         body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            overflow-x: hidden;
+            background-color: #000; color: #fff;
+            font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden;
         }
 
-        /* خلفية الماتريكس المتحركة */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.6;
-        }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
 
-        /* الشريط العلوي (الإحصائيات) */
+        /* الهيدر العلوي */
         .top-bar {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--matrix-green);
-            margin: 10px;
-            padding: 10px;
-            border-radius: 15px;
-            font-family: monospace;
-            color: var(--matrix-green);
-            text-align: center;
+            display: flex; justify-content: space-around; background: rgba(0,0,0,0.8);
+            border: 1px solid var(--matrix-green); margin: 10px; padding: 10px;
+            border-radius: 12px; font-family: monospace; color: var(--matrix-green);
         }
 
-        .header-section {
-            text-align: center;
-            padding: 20px;
+        .section-title {
+            text-align: center; color: var(--matrix-green);
+            text-shadow: 0 0 10px var(--matrix-green); margin: 30px 0 15px 0;
         }
 
-        .main-title {
-            color: var(--matrix-green);
-            font-size: 2.5rem;
-            text-shadow: 0 0 15px var(--matrix-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        .container { padding: 15px; max-width: 500px; margin: 0 auto; }
+
+        /* تصميم البطاقات الموحد */
+        .card {
+            background: var(--card-bg); border: 1px solid #222;
+            border-radius: 15px; padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        /* تصميم البطاقات (الخدمات) */
-        .services-container {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 500px;
-            margin: 0 auto;
+        .price { color: var(--matrix-green); font-size: 1.5rem; font-weight: bold; margin: 10px 0; }
+        
+        input {
+            width: 100%; background: #000; border: 1px solid #444;
+            color: var(--matrix-green); padding: 10px; border-radius: 8px;
+            box-sizing: border-box; margin-top: 10px; font-family: monospace;
         }
 
-        .service-card {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .btn {
+            background: var(--matrix-green); color: #000; border: none;
+            padding: 12px; width: 100%; border-radius: 8px;
+            font-weight: bold; cursor: pointer; margin-top: 10px;
         }
 
-        .service-card h2 {
-            margin-top: 0;
-            font-size: 1.5rem;
-        }
-
-        .service-card p {
-            color: #ccc;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .price {
-            color: var(--matrix-green);
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-
-        .order-btn {
-            background: var(--matrix-green);
-            color: #000;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        .order-btn:active {
-            transform: scale(0.95);
+        .tool-res {
+            font-size: 0.8rem; color: var(--accent-blue);
+            margin-top: 10px; direction: ltr; text-align: left;
+            word-break: break-all; min-height: 20px;
         }
     </style>
 </head>
@@ -117,64 +65,62 @@
     <canvas id="bg-canvas"></canvas>
 
     <div class="top-bar">
-        <div>
-            <div style="font-size: 0.8rem;">VISITORS: <span id="v-time">00:00:00</span></div>
-            <div style="font-size: 1.2rem; font-weight: bold;">1,405</div>
-        </div>
-        <div>
-            <div style="font-size: 0.8rem;">SERVER:</div>
-            <div style="font-size: 1rem; font-weight: bold;">ONLINE</div>
-        </div>
+        <div>VISITORS: <span id="v-time">00:00:00</span><br><b>1,405</b></div>
+        <div style="text-align:center;">SERVER:<br><b>ONLINE</b></div>
     </div>
 
-    <div class="header-section">
-        <h1 class="main-title">الخدمات التجارية 🛡️</h1>
-    </div>
-
-    <div class="services-container">
-        <div class="service-card">
-            <h2>فحص الثغرات الأمنية</h2>
-            <p>كشف نقاط الضعف في المواقع والتطبيقات.</p>
+    <div class="container">
+        <h2 class="section-title">الخدمات التجارية 🛡️</h2>
+        <div class="card">
+            <h3>فحص الثغرات الأمنية</h3>
+            <p style="color:#aaa; font-size:0.9rem;">كشف نقاط الضعف في المواقع والتطبيقات.</p>
             <div class="price">25,000 د.ع</div>
-            <button class="order-btn" onclick="location.href='https://t.me/Yssine111'">طلب الخدمة</button>
+            <button class="btn" onclick="location.href='https://t.me/Yssine111'">طلب الخدمة</button>
         </div>
 
-        <div class="service-card">
-            <h2>برمجة أدوات Python</h2>
-            <p>بناء سكربتات ذكية لأتمتة المهام التقنية.</p>
-            <div class="price">مخصص</div>
-            <button class="order-btn" onclick="location.href='https://t.me/Yssine111'">طلب الخدمة</button>
+        <h2 class="section-title">أدوات ذكية 🛠️</h2>
+        
+        <div class="card">
+            <h4 style="margin:0;">محول النصوص (Binary)</h4>
+            <input type="text" id="bin-input" placeholder="اكتب هنا للتحويل..." 
+                   oninput="document.getElementById('bin-out').innerText = this.value.split('').map(c => c.charCodeAt(0).toString(2)).join(' ')">
+            <div id="bin-out" class="tool-res"></div>
+        </div>
+
+        <div class="card">
+            <h4 style="margin:0;">توليد كلمة سر قوية</h4>
+            <button class="btn" style="background: #333; color: #fff;" onclick="genPass()">توليد الآن</button>
+            <div id="pass-out" class="tool-res" style="text-align:center; font-size:1.1rem; color:var(--matrix-green);"></div>
         </div>
     </div>
 
     <script>
-        // ساعة الزوار
+        // ساعة النظام
         setInterval(() => {
             document.getElementById('v-time').innerText = new Date().toLocaleTimeString('en-GB');
         }, 1000);
 
-        // خلفية الماتريكس
+        // وظيفة توليد كلمة السر
+        function genPass() {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+            let pass = "";
+            for (let i = 0; i < 12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            document.getElementById('pass-out').innerText = pass;
+        }
+
+        // خلفية الماتريكس (الكلاسيكية)
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const letters = "0101010101010101";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const drops = Array(Math.floor(canvas.width/16)).fill(1);
         function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = fontSize + "px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#0F0"; ctx.font = "15px monospace";
+            drops.forEach((y, i) => {
+                ctx.fillText(Math.floor(Math.random()*2), i*16, y*16);
+                if(y*16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
-            }
+            });
         }
         setInterval(draw, 33);
     </script>
